@@ -139,7 +139,7 @@ async function rumbeeLogin(req, res) {
     updates.clerk_user_id = clerkAuth.userId;
   }
   if (!user.rumbee_id) {
-    updates.rumbee_id = await rumbeeClient.createAccount({ email: user.email });
+    updates.rumbee_id = rumbeeClient.ACCOUNT_ID;
   }
   if (Object.keys(updates).length > 0) {
     user = await query.user.update({ id: user.id }, updates);
