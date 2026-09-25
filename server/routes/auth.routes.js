@@ -45,7 +45,7 @@ router.post(
 router.post(
   "/change-password",
   locals.viewTemplate("partials/settings/change_password"),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   validators.changePassword,
   asyncHandler(helpers.verify),
   helpers.rateLimit({ window: 60, limit: 5 }),
@@ -55,7 +55,7 @@ router.post(
 router.post(
   "/change-email",
   locals.viewTemplate("partials/settings/change_email"),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   auth.featureAccess([env.MAIL_ENABLED]),
   validators.changeEmail,
   asyncHandler(helpers.verify),
@@ -66,7 +66,7 @@ router.post(
 router.post(
   "/apikey",
   locals.viewTemplate("partials/settings/apikey"),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   helpers.rateLimit({ window: 60, limit: 10 }),
   asyncHandler(auth.generateApiKey)
 );

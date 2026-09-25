@@ -62,6 +62,14 @@
       </a>
     </div>
   {{/if}}
+  {{#if rumbee_enabled}}
+    <div class="buttons-wrapper">
+      <a class="button primary full" href="/login/rumbee" title="Login with RumBee ID">
+        <span>{{> icons/key}}</span>
+        Login with RumBee ID
+      </a>
+    </div>
+  {{/if}}
   {{#unless disallow_login_form}}
     {{#if mail_enabled}}
       <a class="forgot-password" href="/reset-password" title="Reset password">Forgot your password?</a>
