@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "static/css/styles.css"
+        ],
+        "createdAt": "2026-09-25T17:48:53.314Z",
+        "reason": "Claude scoping decision (not user-confirmed): legacy Kutt pill inputs/select (100px radius + 5px flat-bottom border) are shape/form, explicitly deferred to a future migration phase per project convention (CLAUDE.md phased migration). Stated in this session's audit and polish reports; revisit when component-shape work is in scope."
+      }
+    ]
+  }
+}

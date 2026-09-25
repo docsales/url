@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:00:00Z",
+  "title": "Design System: RumBee URL",
+  "extensions": {
+    "colorMeta": {
+      "chrome": { "role": "anchor", "displayName": "Chrome", "canonical": "#0B0D10", "tonalRamp": ["#0B0D10", "#0E1013"] },
+      "grafite": { "role": "neutral", "displayName": "Grafite", "canonical": "#0E1013", "tonalRamp": ["#0B0D10", "#0E1013", "#171B21", "#1B2028", "#20262F", "#262B33", "#333944"] },
+      "superficie": { "role": "neutral", "displayName": "Superfície", "canonical": "#1B2028", "tonalRamp": ["#0B0D10", "#0E1013", "#171B21", "#1B2028", "#20262F", "#262B33"] },
+      "borda": { "role": "neutral", "displayName": "Borda", "canonical": "#262B33", "tonalRamp": ["#262B33", "#E4E1D8"] },
+      "osso": { "role": "neutral", "displayName": "Osso", "canonical": "#ECE9E2", "tonalRamp": ["#333944", "#8A9099", "#9AA0A8", "#B9BEC5", "#ECE9E2"] },
+      "nevoa": { "role": "neutral", "displayName": "Névoa", "canonical": "#8A9099", "tonalRamp": ["#8A9099", "#5F6266"] },
+      "ambar": { "role": "primary", "displayName": "Âmbar", "canonical": "#E8A020", "tonalRamp": ["#9C6205", "#C97D06", "#E8A020", "#F3C065", "#FBE4B8", "#FDF3E2"] },
+      "ambar-ink": { "role": "primary", "displayName": "Âmbar (tinta de texto/link)", "canonical": "#8A5A05", "tonalRamp": ["#8A5A05", "#E8A020"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#F7F6F2", "tonalRamp": ["#DDD9CD", "#E4E1D8", "#EFEDE6", "#F3F1EB", "#F7F6F2", "#FFFFFF"] },
+      "tinta": { "role": "neutral", "displayName": "Tinta", "canonical": "#17181B", "tonalRamp": ["#17181B", "#5F6266", "#6B6E72"] }
+    },
+    "typographyMeta": {
+      "h1": { "displayName": "H1", "purpose": "Título de página/seção." },
+      "h2": { "displayName": "H2", "purpose": "Subtítulo de seção." },
+      "h3": { "displayName": "H3", "purpose": "Título de card ou diálogo." },
+      "body": { "displayName": "Body", "purpose": "Texto corrido, formulário, célula de tabela." },
+      "label": { "displayName": "Label", "purpose": "Rótulo, overline, cabeçalho de coluna — sempre uppercase, tracking 0.05em." }
+    },
+    "shadows": [
+      { "name": "shadow-sm", "value": "0 1px 2px rgba(0,0,0,0.35)", "purpose": "Elevação mínima; raramente usada — a maioria das superfícies usa borda, não sombra." },
+      { "name": "shadow-md", "value": "0 10px 24px rgba(0,0,0,0.5)", "purpose": "Menu suspenso, dropdown." },
+      { "name": "shadow-lg", "value": "0 20px 44px -10px rgba(0,0,0,0.7)", "purpose": "Diálogo/modal flutuante." },
+      { "name": "glow", "value": "0 2px 20px rgba(232,160,32,0.30)", "purpose": "Realce opcional atrás do botão primário âmbar." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Easing padrão para toda transição de estado." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Hover, foco, mudanças de estado pequenas." },
+      { "name": "duration-normal", "value": "220ms", "purpose": "Entrada de elemento, transições maiores." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação primária da tela — criar link, salvar, confirmar.",
+      "html": "<button class=\"ds-btn-primary\">Criar link</button>",
+      "css": ".ds-btn-primary { background: var(--accent, #E8A020); color: var(--accent-on, #17130A); border: none; border-radius: 8px; height: 38px; padding: 0 18px; font-family: Archivo, system-ui, sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: filter 150ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { filter: brightness(1.08); outline: 2px solid var(--accent, #E8A020); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação paralela — cancelar, editar, ação secundária de modal.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { background: var(--surface, #1B2028); color: var(--text, #ECE9E2); border: 1px solid var(--border, #262B33); border-radius: 8px; height: 38px; padding: 0 16px; font-family: Archivo, system-ui, sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: border-color 150ms; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { border-color: var(--text-muted, #8A9099); outline: 2px solid var(--accent, #E8A020); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Campo de texto padrão — URL a encurtar, e-mail, senha.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"https://exemplo.com/caminho-longo\" />",
+      "css": ".ds-input { background: var(--surface, #1B2028); color: var(--text, #ECE9E2); border: 1px solid var(--border, #262B33); border-radius: 8px; height: 44px; padding: 0 14px; font-family: Archivo, system-ui, sans-serif; font-size: 13.5px; width: 100%; box-sizing: border-box; } .ds-input::placeholder { color: var(--text-muted, #8A9099); } .ds-input:focus { outline: none; border-color: var(--accent, #E8A020); box-shadow: 0 0 0 3px rgba(232,160,32,0.18); }"
+    },
+    {
+      "name": "Link Row",
+      "kind": "custom",
+      "refersTo": "card-default",
+      "description": "Linha da tabela de links: código curto + destino, com hover e sem zebra.",
+      "html": "<div class=\"ds-link-row\"><span class=\"ds-link-row-short\">rumb.ee/x7k2</span><span class=\"ds-link-row-target\">exemplo.com/caminho-original-bem-longo</span></div>",
+      "css": ".ds-link-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface, #1B2028); border-top: 1px solid var(--border, #262B33); padding: 12px 16px; font-family: Archivo, system-ui, sans-serif; transition: background 150ms; } .ds-link-row:hover { background: var(--row-hover, #20262F); } .ds-link-row-short { color: var(--accent-ink, #E8A020); font-weight: 600; font-size: 13.5px; white-space: nowrap; } .ds-link-row-target { color: var(--text-muted, #8A9099); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }"
+    },
+    {
+      "name": "Auth Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Card central do shell de login — envolve o formulário existente sem alterar seus campos.",
+      "html": "<div class=\"ds-auth-card\"><h3 class=\"ds-auth-card-title\">Entrar no RumBee URL</h3><p class=\"ds-auth-card-sub\">Use seu e-mail e senha para continuar.</p></div>",
+      "css": ".ds-auth-card { background: var(--surface, #1B2028); border: 1px solid var(--border, #262B33); border-radius: 12px; padding: 32px 24px; max-width: 420px; } .ds-auth-card-title { font-family: Archivo, system-ui, sans-serif; font-size: 20px; font-weight: 700; color: var(--text, #ECE9E2); margin: 0 0 8px; } .ds-auth-card-sub { font-family: Archivo, system-ui, sans-serif; font-size: 13.5px; color: var(--text-muted, #8A9099); margin: 0; }"
+    },
+    {
+      "name": "Theme Toggle",
+      "kind": "button",
+      "description": "Alternador de tema circular — lua no claro, sol no escuro.",
+      "html": "<button class=\"ds-theme-toggle\" aria-label=\"Alternar tema\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg></button>",
+      "css": ".ds-theme-toggle { width: 36px; height: 36px; border-radius: 9999px; background: var(--surface, #1B2028); border: 1px solid var(--border, #262B33); color: var(--text-muted, #8A9099); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color 150ms, border-color 150ms; } .ds-theme-toggle svg { stroke: currentColor; } .ds-theme-toggle:hover, .ds-theme-toggle:focus-visible { color: var(--text, #ECE9E2); border-color: var(--text-muted, #8A9099); outline: 2px solid var(--accent, #E8A020); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A beeline até o destino.",
+    "overview": "RumBee vem de rumo + bee: a abelha não vagueia, ela volta em linha reta pra colmeia. Um link curto é, literalmente, isso — a menor distância entre um clique e o destino real. Essa é a leitura própria deste produto do conceito da marca, sem tomar emprestado o vocabulário de \"fechamento\" de venda de outros produtos RumBee.\n\nRumBee URL é ferramenta interna, de uso diário: densidade confortável, nada decorativo, neutro carrega a informação e âmbar carrega a única decisão na tela. É um app mais simples que o shell de dashboard RumBee (sem sidebar, sem seletor de entidade, sem período) — cabeçalho fixo, formulários, uma tabela de links e um shell de autenticação próprio para quem ainda não entrou.",
+    "keyCharacteristics": [
+      "Grafite como base em 90%+ da tela; âmbar só no ponto de decisão.",
+      "Superfícies planas com borda, não sombra — a profundidade vem do contraste, não do box-shadow.",
+      "Uma família tipográfica (Archivo), hierarquia só por tamanho e peso.",
+      "Dark é a âncora da marca; light é o mesmo sistema, nunca \"invertido\"."
+    ],
+    "rules": [
+      { "name": "A Regra do Alvo", "body": "Âmbar nunca é fundo de página, card grande ou área de chrome — aparece só no ponto de decisão, e não passa de ~8% de qualquer tela.", "section": "colors" },
+      { "name": "A Regra da Cor de Texto", "body": "Uma cor de texto (--err-text, --accent-ink) não vira cor de fundo de botão/badge. Quem precisa de fill tem seu próprio token -fill, constante nos dois temas.", "section": "colors" },
+      { "name": "A Regra da Família Única", "body": "Zero mono, inclusive em valores e IDs — números em Archivo 500/600 alinhados à direita já tabulam bem.", "section": "typography" },
+      { "name": "A Regra da Borda, não da Sombra", "body": "Se uma superfície precisa se separar do fundo, a resposta é border: 1px solid var(--border), não box-shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do usar Archivo em tudo — títulos, corpo, rótulos, valores.",
+      "Do manter âmbar como a única cor de decisão por tela (botão primário, item ativo, foco).",
+      "Do conferir dark e light ao vivo antes de considerar uma tela pronta.",
+      "Do usar o fill âmbar constante (#E8A020 + texto #17130A) e deixar só a tinta de texto/link mudar entre temas.",
+      "Do separar superfícies com borda, não sombra."
+    ],
+    "donts": [
+      "Don't usar segunda família tipográfica, nem mono para números/IDs.",
+      "Don't usar âmbar como fundo de página, card grande ou cabeçalho inteiro.",
+      "Don't usar texto branco sobre fill âmbar (2.1:1 — reprova).",
+      "Don't usar uma cor de texto (--err-text, --accent-ink) como cor de fundo de botão/badge — cada papel que precisa de fill tem seu próprio token -fill.",
+      "Don't usar emoji ou exclamação na interface."
+    ]
+  }
+}
