@@ -134,13 +134,15 @@ async function rumbeeLogin(req, res) {
     });
   }
 
+  const updates = {};
   if (user.clerk_user_id !== clerkAuth.userId) {
-    user = await query.user.update({ id: user.id }, { clerk_user_id: clerkAuth.userId });
+    updates.clerk_user_id = clerkAuth.userId;
   }
-
   if (!user.rumbee_id) {
-    const rumbeeId = await rumbeeClient.createAccount({ email: user.email });
-    user = await query.user.update({ id: user.id }, { rumbee_id: rumbeeId });
+    updates.rumbee_id = await rumbeeClient.createAccount({ email: user.email });
+  }
+  if (Object.keys(updates).length > 0) {
+    user = await query.user.update({ id: user.id }, updates);
   }
 
   const token = utils.signToken(user);
