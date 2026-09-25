@@ -19,6 +19,18 @@ async function evictByRumbeeId(rumbeeId) {
 router.post(
   "/rumbee-login",
   asyncHandler(async function (req, res) {
+    // An empty/unset RUMBEE_CALLBACK_SECRET (env.js's default when it's not
+    // configured) must never be treated as "no secret required." Without this
+    // guard, a caller that also sends no X-Rumbee-Callback-Secret header would
+    // pass handleCallback's timingSafeEqual check (0-length buffer == 0-length
+    // buffer), silently accepting unauthenticated webhook events. Reject before
+    // handleCallback ever runs so an unconfigured secret can't be trivially
+    // satisfied by an equally-empty/missing header.
+    if (!env.RUMBEE_CALLBACK_SECRET) {
+      res.status(401).end();
+      return;
+    }
+
     const fetchResponse = await handleCallback(
       toFetchRequest(req),
       env.RUMBEE_CALLBACK_SECRET,
