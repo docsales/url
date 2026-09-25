@@ -12,7 +12,7 @@ const router = Router();
 router.get(
   "/",
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   asyncHandler(user.get)
 );
 
@@ -20,7 +20,7 @@ router.get(
   "/admin",
   locals.viewTemplate("partials/admin/users/table"),
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   asyncHandler(auth.admin),
   helpers.parseQuery,
   locals.adminTable,
@@ -31,7 +31,7 @@ router.post(
   "/admin",
   locals.viewTemplate("partials/admin/dialog/create_user"),
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   asyncHandler(auth.admin),
   validators.createUser,
   asyncHandler(helpers.verify),
@@ -42,7 +42,7 @@ router.post(
   "/delete",
   locals.viewTemplate("partials/settings/delete_account"),
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   validators.deleteUser,
   asyncHandler(helpers.verify),
   asyncHandler(user.remove)
@@ -52,7 +52,7 @@ router.delete(
   "/admin/:id",
   locals.viewTemplate("partials/admin/dialog/delete_user"),
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   asyncHandler(auth.admin),
   validators.deleteUserByAdmin,
   asyncHandler(helpers.verify),
@@ -63,7 +63,7 @@ router.post(
   "/admin/ban/:id",
   locals.viewTemplate("partials/admin/dialog/ban_user"),
   asyncHandler(auth.apikey),
-  asyncHandler(auth.jwt),
+  ...auth.jwtWithAccess,
   asyncHandler(auth.admin),
   validators.banUser,
   asyncHandler(helpers.verify),
