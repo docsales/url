@@ -591,7 +591,7 @@ table {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 12px;
   box-shadow: 0 6px 15px var(--table-shadow-color);
   text-align: center;
@@ -699,7 +699,7 @@ table .tab a {
   color: var(--text-color);
   border: none;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--surface);
   cursor: pointer;
   box-shadow: 0 0px 10px rgba(100, 100, 100, 0.1);
   font-weight: normal;
@@ -745,7 +745,7 @@ table .tab a:not(.active):hover {
   align-items: center;
   text-align: center;
   padding: 3rem 2rem;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 8px;
   --keyframe-slidey-offset: -30px;
   animation: slidey 0.2s ease-in-out;
@@ -1844,7 +1844,7 @@ form#delete-account.htmx-request .spinner { display: block; }
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 12px;
   box-shadow: 0 6px 15px var(--table-shadow-color);
   overflow: hidden;
