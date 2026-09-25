@@ -1,46 +1,46 @@
-@font-face {
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 200 1000;
-  src: url(/fonts/nunito-variable.woff2) format('woff2');
-}
-
+/*
+ * Bridge pro RumBee Brand Book: os nomes abaixo são os que o Kutt sempre usou
+ * (consumidos em todo o resto deste arquivo e em server/views/**). Os VALORES agora
+ * apontam pros tokens RumBee (static/css/rumbee-tokens.css, linkado antes deste arquivo)
+ * em vez de cor literal. Isso recolore o app inteiro, com dark/light, sem tocar forma de
+ * botão/tabela/modal ainda — essa aposentadoria seletor-a-seletor é trabalho das
+ * próximas fases da migração (ver docs/superpowers/specs/2026-09-25-*).
+ * Nenhuma cor nova aqui: tudo referencia var(--*) de tokens.css.
+ */
 :root {
-  --bg-color: hsl(206, 12%, 95%);
-  --text-color: hsl(200, 35%, 25%);
-  --color-primary: hsl(207, 90%, 54%);
-  --outline-color: hsl(188, 100%, 54%);
-  --button-bg: linear-gradient(to right, #e0e0e0, #bdbdbd);
-  --button-bg-box-shadow-color: rgba(160, 160, 160, 0.5);
-  --button-bg-primary: linear-gradient(to right, hsl(207, 90%, 61%), hsl(218, 100%, 58%));
-  --button-bg-primary-box-shadow-color: hsla(207, 90%, 61%, 0.5);
-  --button-bg-secondary: linear-gradient(to right, hsl(262, 47%, 55%), hsl(265, 100%, 46%));
-  --button-bg-secondary-box-shadow-color: hsla(258, 58%, 42%, 0.5);
-  --button-bg-danger: linear-gradient(to right, hsl(0, 84%, 58%), hsl(0, 78%, 50%));
-  --button-bg-danger-box-shadow-color: hsla(0, 58%, 42%, 0.5);
-  --button-bg-success: linear-gradient(to right, hsl(130, 58%, 45%), hsl(130, 67%, 45%));
-  --button-bg-success-box-shadow-color: hsla(128, 80%, 48%, 0.5);
-  --button-action-shadow-color: hsla(200, 15%, 60%, 0.12);
-  --underline-color: hsl(200, 35%, 65%);
-  --secondary-text-color: hsl(200, 14%, 60%);
-  --send-icon-hover-color: hsl(262, 52%, 47%);
-  --send-spinner-icon-color: hsl(200, 15%, 70%);
-  --success-icon-color: hsl(144, 40%, 57%);
-  --error-icon-color: hsl(0, 86%, 63%);
-  --copy-icon-color: hsl(144, 40%, 57%);
-  --copy-icon-bg-color: hsl(144, 100%, 96%);
-  --copy-icon-shadow-color: hsla(200, 15%, 60%, 0.12);
-  --focus-outline-color: hsla(207, 90%, 61%, 0.5);
-  --checkbox-bg-color: hsl(262, 47%, 63%);
-  --input-shadow-color: hsla(200, 15%, 70%, 0.2);
-  --input-hover-shadow-color: hsla(200, 15%, 70%, 0.4);
-  --input-label-color: hsl(200, 35%, 25%);
-  --table-bg-color: hsl(200, 12%, 95%);
-  --table-shadow-color: hsla(200, 20%, 70%, 0.3);
-  --table-tr-border-color: hsl(200, 14%, 94%);
-  --table-tr-hover-bg-color: hsl(200, 14%, 98%);
-  --table-head-tr-border-color: hsl(200, 14%, 90%);
-  --table-status-gray-bg-color: hsl(200, 12%, 95%);
+  --bg-color: var(--bg);
+  --text-color: var(--text);
+  --color-primary: var(--accent-ink);
+  --outline-color: var(--accent);
+  --button-bg: var(--rb-osso);
+  --button-bg-box-shadow-color: rgba(11, 13, 16, 0.25);
+  --button-bg-primary: var(--accent);
+  --button-bg-primary-box-shadow-color: rgba(232, 160, 32, 0.35);
+  --button-bg-secondary: var(--chrome);
+  --button-bg-secondary-box-shadow-color: rgba(11, 13, 16, 0.25);
+  --button-bg-danger: var(--err-fill);
+  --button-bg-danger-box-shadow-color: rgba(179, 38, 30, 0.35);
+  --button-action-shadow-color: rgba(11, 13, 16, 0.2);
+  --underline-color: var(--border);
+  --secondary-text-color: var(--text-muted);
+  --send-icon-hover-color: var(--accent);
+  --send-spinner-icon-color: var(--text-faint);
+  --success-icon-color: var(--ok-text);
+  --error-icon-color: var(--err-text);
+  --copy-icon-color: var(--accent-ink);
+  --copy-icon-bg-color: var(--accent-tint);
+  --copy-icon-shadow-color: rgba(11, 13, 16, 0.15);
+  --focus-outline-color: var(--accent);
+  --checkbox-bg-color: var(--accent);
+  --input-shadow-color: rgba(11, 13, 16, 0.15);
+  --input-hover-shadow-color: rgba(232, 160, 32, 0.18);
+  --input-label-color: var(--text);
+  --table-bg-color: var(--surface-raised);
+  --table-shadow-color: transparent;
+  --table-tr-border-color: var(--border);
+  --table-tr-hover-bg-color: var(--row-hover);
+  --table-head-tr-border-color: var(--border);
+  --table-status-gray-bg-color: var(--neutral-bg);
   --keyframe-slidey-offset: 0;
 }
 
@@ -66,18 +66,11 @@
 
 /* GENERAL */
 body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-color);
-  font: 16px/1.45 'Nunito', sans-serif;
   overflow-x: hidden;
-  color: var(--text-color);
 }
 
 * {
   box-sizing: border-box;
-  outline-color: var(--outline-color);
-
 }
 
 *::-moz-focus-inner {
@@ -93,7 +86,7 @@ hr {
   height: 2px;
   outline: none;
   border: none;
-  background-color: hsl(200, 20%, 92%);
+  background-color: var(--border);
 }
 
 span.bold { font-weight: bold; }
@@ -182,13 +175,6 @@ button.danger {
   box-shadow: 0 5px 6px var(--button-bg-danger-box-shadow-color);
 }
 
-a.button.success,
-button.success {
-  color: white;
-  background: var(--button-bg-success);
-  box-shadow: 0 5px 6px var(--button-bg-success-box-shadow-color);
-}
-
 a.button:focus,
 a.button:hover,
 button:focus,
@@ -216,13 +202,6 @@ a.button.danger:hover,
 button.danger:focus,
 button.danger:hover {
   box-shadow: 0 6px 15px var(--button-bg-danger-box-shadow-color);
-}
-
-a.button.success:focus,
-a.button.success:hover,
-button.success:focus,
-button.success:hover {
-  box-shadow: 0 6px 15px var(--button-bg-success-box-shadow-color);
 }
 
 a.button:disabled,
@@ -391,12 +370,6 @@ button.table.danger,
 button.danger:focus,
 button.danger:hover {
   box-shadow: 0 1px 2px var(--button-bg-danger-box-shadow-color);
-}
-
-button.table.success,
-button.success:focus,
-button.success:hover {
-  box-shadow: 0 1px 2px var(--button-bg-success-box-shadow-color);
 }
 
 button.link {
@@ -618,7 +591,7 @@ table {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 12px;
   box-shadow: 0 6px 15px var(--table-shadow-color);
   text-align: center;
@@ -726,7 +699,7 @@ table .tab a {
   color: var(--text-color);
   border: none;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--surface);
   cursor: pointer;
   box-shadow: 0 0px 10px rgba(100, 100, 100, 0.1);
   font-weight: normal;
@@ -772,7 +745,7 @@ table .tab a:not(.active):hover {
   align-items: center;
   text-align: center;
   padding: 3rem 2rem;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 8px;
   --keyframe-slidey-offset: -30px;
   animation: slidey 0.2s ease-in-out;
@@ -1871,7 +1844,7 @@ form#delete-account.htmx-request .spinner { display: block; }
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 12px;
   box-shadow: 0 6px 15px var(--table-shadow-color);
   overflow: hidden;

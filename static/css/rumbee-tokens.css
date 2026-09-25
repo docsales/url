@@ -1,0 +1,222 @@
+/**
+ * RumBee Brand Tokens — v1.0 · Setembro 2026
+ *
+ * Fonte única de verdade para cor, tipografia, raio, sombra e espaçamento
+ * de qualquer produto RumBee. Não redefina nenhum destes valores no produto:
+ * consuma sempre via var(--rb-*) ou via os aliases semânticos (--bg, --text…).
+ *
+ * Uso:
+ *   <link rel="stylesheet" href="rumbee-brand/tokens.css">
+ *   <html data-theme="dark">  ou  data-theme="light"
+ *
+ * Sem data-theme, o arquivo segue prefers-color-scheme (dark por padrão).
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ─── Marca: âmbar ─────────────────────────────────────────────── */
+  --rb-amber-50:  #FDF3E2;
+  --rb-amber-100: #FBE4B8;
+  --rb-amber-300: #F3C065;
+  --rb-amber-500: #E8A020;  /* âmbar RumBee — a cor da ação */
+  --rb-amber-600: #C97D06;
+  --rb-amber-700: #9C6205;
+  --rb-amber-ink: #8A5A05;  /* texto/link âmbar sobre fundo claro (4.8:1) */
+  --rb-amber-on:  #17130A;  /* texto sobre fill âmbar (12.6:1) */
+
+  /* ─── Grafite: escala neutra ───────────────────────────────────── */
+  --rb-graf-950: #0B0D10;   /* sidebar, chrome de marca */
+  --rb-graf-900: #0E1013;   /* fundo dark */
+  --rb-graf-850: #171B21;   /* header de tabela, busca */
+  --rb-graf-800: #1B2028;   /* card/superfície dark */
+  --rb-graf-750: #20262F;   /* hover de linha */
+  --rb-graf-700: #262B33;   /* borda dark */
+  --rb-graf-600: #333944;   /* barra de gráfico neutra, scrollbar */
+  --rb-graf-400: #8A9099;   /* texto secundário dark */
+  --rb-graf-300: #9AA0A8;   /* texto terciário dark (mínimo AA) */
+  --rb-graf-200: #B9BEC5;   /* texto de badge neutro dark */
+  --rb-osso:     #ECE9E2;   /* texto principal dark */
+
+  /* ─── Osso: escala clara ───────────────────────────────────────── */
+  --rb-paper-50:  #FFFFFF;  /* card/superfície light */
+  --rb-paper-100: #F7F6F2;  /* fundo light */
+  --rb-paper-200: #F3F1EB;  /* header de tabela light */
+  --rb-paper-300: #EFEDE6;  /* busca, badge neutro light */
+  --rb-paper-400: #E4E1D8;  /* borda light */
+  --rb-paper-500: #DDD9CD;  /* barra de gráfico neutra light */
+  --rb-ink-900:   #17181B;  /* texto principal light */
+  --rb-ink-600:   #5F6266;  /* texto secundário light */
+  --rb-ink-500:   #6B6E72;  /* texto terciário light (mínimo AA) */
+
+  /* ─── Semânticas ───────────────────────────────────────────────── */
+  --rb-ok-dark-bg:    rgba(16,185,129,0.15);  --rb-ok-dark-text:    #34D399;
+  --rb-ok-light-bg:   #D6F5E6;                --rb-ok-light-text:   #046B4D;
+  --rb-warn-dark-bg:  rgba(245,158,11,0.15);  --rb-warn-dark-text:  #FBBF24;
+  --rb-warn-light-bg: #FDF0CF;                --rb-warn-light-text: #8A5A05;
+  --rb-err-dark-bg:   rgba(220,38,38,0.15);   --rb-err-dark-text:   #F87171;
+  --rb-err-light-bg:  #FBE3E1;                --rb-err-light-text:  #B3261E;
+  --rb-err-fill:      #B3261E;                --rb-err-on-fill:     #FFFFFF;
+  --rb-info-dark-bg:  rgba(8,145,178,0.18);   --rb-info-dark-text:  #22D3EE;
+  --rb-info-light-bg: #D9F1F7;                --rb-info-light-text: #0E5C70;
+
+  /* ─── Tipografia ───────────────────────────────────────────────── */
+  --rb-font: 'Archivo', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  --rb-size-h1: 26px;   --rb-weight-h1: 700;
+  --rb-size-h2: 20px;   --rb-weight-h2: 700;
+  --rb-size-h3: 16px;   --rb-weight-h3: 600;
+  --rb-size-body: 13.5px;
+  --rb-size-body-sm: 12.5px;
+  --rb-size-label: 11px;      /* overline: 600, uppercase, 0.05em */
+  --rb-size-caption: 11.5px;
+  --rb-size-search: 15px;
+  --rb-size-metric: 23px;     /* número grande de card: 600 */
+  --rb-tracking-label: 0.05em;
+
+  /* ─── Espaçamento ──────────────────────────────────────────────── */
+  --rb-space-1: 4px;   --rb-space-2: 8px;   --rb-space-3: 12px;
+  --rb-space-4: 16px;  --rb-space-5: 20px;  --rb-space-6: 24px;
+  --rb-space-8: 32px;  --rb-space-10: 40px;
+
+  /* ─── Raio ─────────────────────────────────────────────────────── */
+  --rb-radius-sm: 6px;    /* badge pequeno, ícone de banco */
+  --rb-radius-md: 8px;    /* input, botão, select */
+  --rb-radius-lg: 12px;   /* card, tabela */
+  --rb-radius-xl: 16px;   /* modal */
+  --rb-radius-pill: 9999px;
+
+  /* ─── Altura de controle ───────────────────────────────────────── */
+  --rb-control-sm: 30px;
+  --rb-control-md: 38px;   /* padrão de toolbar */
+  --rb-control-lg: 44px;   /* formulário, autenticação */
+  --rb-search-h: 50px;
+  --rb-row-h: 44px;        /* densidade comfortable */
+
+  /* ─── Movimento ────────────────────────────────────────────────── */
+  --rb-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --rb-dur-fast: 150ms;
+  --rb-dur-normal: 220ms;
+}
+
+/* ─── Tema dark (âncora da marca) ─────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg: var(--rb-graf-900);
+  --surface: var(--rb-graf-800);
+  --surface-raised: var(--rb-graf-850);
+  --chrome: var(--rb-graf-950);
+  --search-bg: var(--rb-graf-850);
+  --header-bg: var(--rb-graf-850);
+  --row-hover: var(--rb-graf-750);
+  --border: var(--rb-graf-700);
+  --bar: var(--rb-graf-600);
+
+  --text: var(--rb-osso);
+  --text-muted: var(--rb-graf-400);
+  --text-faint: var(--rb-graf-300);
+
+  --accent: var(--rb-amber-500);
+  --accent-on: var(--rb-amber-on);
+  --accent-ink: var(--rb-amber-500);   /* link âmbar: legível sobre grafite */
+  --accent-tint: rgba(232,160,32,0.10);
+
+  --ok-bg: var(--rb-ok-dark-bg);       --ok-text: var(--rb-ok-dark-text);
+  --warn-bg: var(--rb-warn-dark-bg);   --warn-text: var(--rb-warn-dark-text);
+  --err-bg: var(--rb-err-dark-bg);     --err-text: var(--rb-err-dark-text);
+  --err-fill: var(--rb-err-fill);      --err-on-fill: var(--rb-err-on-fill);
+  --info-bg: var(--rb-info-dark-bg);   --info-text: var(--rb-info-dark-text);
+  --neutral-bg: rgba(138,144,153,0.18); --neutral-text: var(--rb-graf-200);
+
+  --positive: var(--rb-ok-dark-text);
+  --negative: var(--rb-err-dark-text);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-md: 0 10px 24px rgba(0,0,0,0.5);
+  --shadow-lg: 0 20px 44px -10px rgba(0,0,0,0.7);
+  --glow: 0 2px 20px rgba(232,160,32,0.30);
+  --overlay: rgba(11,13,16,0.6);
+}
+
+/* ─── Tema light ──────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg: var(--rb-paper-100);
+  --surface: var(--rb-paper-50);
+  --surface-raised: var(--rb-paper-200);
+  --chrome: var(--rb-graf-950);        /* a sidebar NUNCA clareia */
+  --search-bg: var(--rb-paper-300);
+  --header-bg: var(--rb-paper-200);
+  --row-hover: var(--rb-paper-100);
+  --border: var(--rb-paper-400);
+  --bar: var(--rb-paper-500);
+
+  --text: var(--rb-ink-900);
+  --text-muted: var(--rb-ink-600);
+  --text-faint: var(--rb-ink-500);
+
+  --accent: var(--rb-amber-500);       /* o fill âmbar é o mesmo nos dois temas */
+  --accent-on: var(--rb-amber-on);
+  --accent-ink: var(--rb-amber-ink);   /* link/texto âmbar escurece no claro */
+  --accent-tint: var(--rb-amber-50);
+
+  --ok-bg: var(--rb-ok-light-bg);       --ok-text: var(--rb-ok-light-text);
+  --warn-bg: var(--rb-warn-light-bg);   --warn-text: var(--rb-warn-light-text);
+  --err-bg: var(--rb-err-light-bg);     --err-text: var(--rb-err-light-text);
+  --err-fill: var(--rb-err-fill);       --err-on-fill: var(--rb-err-on-fill);
+  --info-bg: var(--rb-info-light-bg);   --info-text: var(--rb-info-light-text);
+  --neutral-bg: var(--rb-paper-300);    --neutral-text: var(--rb-ink-600);
+
+  --positive: var(--rb-ok-light-text);
+  --negative: var(--rb-err-light-text);
+
+  --shadow-sm: 0 1px 2px rgba(14,16,19,0.06);
+  --shadow-md: 0 10px 24px rgba(14,16,19,0.10);
+  --shadow-lg: 0 20px 44px -10px rgba(14,16,19,0.18);
+  --glow: 0 2px 16px rgba(232,160,32,0.25);
+  --overlay: rgba(14,16,19,0.35);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg: var(--rb-paper-100);
+    --surface: var(--rb-paper-50);
+    --surface-raised: var(--rb-paper-200);
+    --search-bg: var(--rb-paper-300);
+    --header-bg: var(--rb-paper-200);
+    --row-hover: var(--rb-paper-100);
+    --border: var(--rb-paper-400);
+    --bar: var(--rb-paper-500);
+    --text: var(--rb-ink-900);
+    --text-muted: var(--rb-ink-600);
+    --text-faint: var(--rb-ink-500);
+    --accent-ink: var(--rb-amber-ink);
+    --accent-tint: var(--rb-amber-50);
+    --ok-bg: var(--rb-ok-light-bg);       --ok-text: var(--rb-ok-light-text);
+    --warn-bg: var(--rb-warn-light-bg);   --warn-text: var(--rb-warn-light-text);
+    --err-bg: var(--rb-err-light-bg);     --err-text: var(--rb-err-light-text);
+    --err-fill: var(--rb-err-fill);       --err-on-fill: var(--rb-err-on-fill);
+    --info-bg: var(--rb-info-light-bg);   --info-text: var(--rb-info-light-text);
+    --neutral-bg: var(--rb-paper-300);    --neutral-text: var(--rb-ink-600);
+    --positive: var(--rb-ok-light-text);
+    --negative: var(--rb-err-light-text);
+    --overlay: rgba(14,16,19,0.35);
+  }
+}
+
+/* ─── Base ────────────────────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family: var(--rb-font);
+  font-size: var(--rb-size-body);
+  background: var(--bg);
+  color: var(--text);
+}
+::selection { background: rgba(232,160,32,0.35); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--rb-graf-600); border-radius: 8px; }
+a { color: var(--accent-ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--rb-radius-sm);
+}
