@@ -5,8 +5,8 @@
 const rumbeeClient = require("./client");
 
 const OPERATORS = [
-  { email: "mk@rumbee.ai", role: "Admin" },
-  { email: "dev@docsales.com", role: "Admin" },
+  { email: "mk@rumbee.ai", role: "admin" },
+  { email: "dev@docsales.com", role: "admin" },
 ];
 
 async function main() {
