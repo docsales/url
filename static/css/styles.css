@@ -1565,9 +1565,9 @@ table .short-link-wrapper { display: flex; align-items: center; }
   margin-top: 0;
 }
 
-#main-table-wrapper table .status.gray { background-color: var(--table-status-gray-bg-color); }
-#main-table-wrapper table .status.green { background-color: hsl(102.4, 100%, 93.3%); }
-#main-table-wrapper table .status.red { background-color: hsl(0, 100%, 96.7%); }
+#main-table-wrapper table .status.gray { background-color: var(--table-status-gray-bg-color); color: var(--neutral-text); }
+#main-table-wrapper table .status.green { background-color: var(--ok-bg); color: var(--ok-text); }
+#main-table-wrapper table .status.red { background-color: var(--err-bg); color: var(--err-text); }
 
 #main-table-wrapper table tr.no-data {
   flex: 1 1 auto; 
