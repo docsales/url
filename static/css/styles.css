@@ -34,6 +34,7 @@
   --checkbox-bg-color: var(--accent);
   --input-shadow-color: rgba(11, 13, 16, 0.15);
   --input-hover-shadow-color: rgba(232, 160, 32, 0.18);
+  --input-error-shadow-color: rgba(179, 38, 30, 0.2);
   --input-label-color: var(--text);
   --table-bg-color: var(--surface-raised);
   --table-shadow-color: transparent;
@@ -156,7 +157,7 @@ button {
 
 a.button.primary,
 button.primary {
-  color: white;
+  color: var(--accent-on);
   background: var(--button-bg-primary);
   box-shadow: 0 5px 6px var(--button-bg-primary-box-shadow-color);
 }
@@ -216,7 +217,7 @@ button span svg {
   width: 1.1em;
   height: auto;
   margin-right: 0.5rem;
-  stroke: white;
+  stroke: currentColor;
   stroke-width: 2;
 }
 
@@ -242,57 +243,57 @@ button.action svg {
 
 a.button.action.delete,
 button.action.delete {
-  background: hsl(0, 100%, 96%);
+  background: var(--err-bg);
 }
 
 a.button.action.delete svg,
 button.action.delete svg {
   stroke-width: 2;
-  stroke: hsl(0, 100%, 69%);
+  stroke: var(--err-text);
 }
 
 a.button.action.edit,
 button.action.edit {
-  background: hsl(46, 100%, 94%);
+  background: var(--warn-bg);
 }
 
 a.button.action.edit svg,
 button.action.edit svg {
   stroke-width: 2.5;
-  stroke: hsl(46, 90%, 50%);
+  stroke: var(--warn-text);
 }
 
 a.button.action.qrcode,
 button.action.qrcode {
-  background: hsl(0, 0%, 94%);
+  background: var(--neutral-bg);
 }
 
 a.button.action.qrcode svg,
 button.action.qrcode svg {
-  fill: hsl(0, 0%, 35%);
+  fill: var(--neutral-text);
   stroke: none;
 }
 
 a.button.action.stats,
 button.action.stats {
-  background: hsl(260, 100%, 96%);
+  background: var(--info-bg);
 }
 
 a.button.action.stats svg,
 button.action.stats svg {
   stroke-width: 2.5;
-  stroke: hsl(260, 100%, 69%);
+  stroke: var(--info-text);
 }
 
 a.button.action.ban,
 button.action.ban {
-  background: hsl(10, 100%, 96%);
+  background: var(--err-bg);
 }
 
 a.button.action.ban svg,
 button.action.ban svg {
   stroke-width: 2;
-  stroke: hsl(10, 100%, 40%);
+  stroke: var(--err-text);
 }
 
 a.button.action.password sv,
@@ -300,7 +301,7 @@ button.action.password svg,
 a.button.action.banned svg,
 button.action.banned svg {
   stroke-width: 2.5;
-  stroke: #bbb;
+  stroke: var(--text-faint);
 }
 
 button.nav {
@@ -313,20 +314,20 @@ button.nav {
   justify-content: center;
   padding: 0 8px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: 0 0px 10px rgba(100, 100, 100, 0.1);
   background: none;
-  background-color: white;
+  background-color: var(--surface);
   transition: all 0.2s ease-in-out;
   font-size: 12px;
   cursor: pointer;
 }
 
 button.nav:disabled {
-  background-color: #f6f6f6;
+  background-color: var(--surface-raised);
   box-shadow: 0 0px 5px rgba(150, 150, 150, 0.1);
   opacity: 0.9;
-  color: #bbb;
+  color: var(--text-faint);
   cursor: default;
 }
 
@@ -421,11 +422,11 @@ input[type="password"] {
   padding: 0 24px;
   font-size: 15px;
   letter-spacing: 0.05em;
-  color: #444;
-  background-color: white;
+  color: var(--text);
+  background-color: var(--surface);
   border: none;
   border-radius: 100px;
-  border-bottom: 5px solid #f5f5f5;
+  border-bottom: 5px solid var(--border);
   border-bottom-width: 5px;
   box-shadow: 0 10px 35px var(--input-shadow-color);
   transition: all 0.5s ease-out;
@@ -444,14 +445,14 @@ input[type="email"]::placeholder,
 input[type="password"]::placeholder {
   font-size: 14px;
   letter-spacing: 0.05em;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .error input[type="text"],
 .error input[type="email"],
 .error input[type="password"] {
-  border-bottom-color: rgba(250, 10, 10, 0.8);
-  box-shadow: 0 10px 15px hsla(0, 100%, 75%, 0.2);
+  border-bottom-color: var(--err-text);
+  box-shadow: 0 10px 15px var(--input-error-shadow-color);
 }
 
 select {
@@ -462,12 +463,12 @@ select {
   font-size: 15px;
   box-sizing: border-box;
   letter-spacing: 0.05em;
-  color: #444;
-  background-color: white;
+  color: var(--text);
+  background-color: var(--surface);
   box-shadow: 0 10px 35px var(--input-shadow-color);
   border: none;
   border-radius: 100px;
-  border-bottom: 5px solid #f5f5f5;
+  border-bottom: 5px solid var(--border);
   border-bottom-width: 5px;
   transition: all 0.5s ease-out;
   appearance: none;
@@ -483,8 +484,8 @@ select:focus {
 }
 
 .error select {
-  border-bottom-color: rgba(250, 10, 10, 0.8);
-  box-shadow: 0 10px 15px hsla(0, 100%, 75%, 0.2);
+  border-bottom-color: var(--err-text);
+  box-shadow: 0 10px 15px var(--input-error-shadow-color);
 }
 
 input[type="checkbox"] {
@@ -495,7 +496,7 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--surface);
   box-shadow: 0 2px 4px rgba(50, 50, 50, 0.2);
   margin: 0;
   -webkit-appearance: none;
@@ -549,7 +550,7 @@ input.table-input::placeholder {
 
 select:has(option[value=""]:checked) {
   letter-spacing: 0.05em;
-  color: #888;
+  color: var(--text-muted);
 }
 
 label {
@@ -584,8 +585,8 @@ p.success {
   animation: fadein 0.3s ease-in-out;
 }
 
-p.error { color: red; }
-p.success { color: #0ea30e; }
+p.error { color: var(--err-text); }
+p.success { color: var(--positive); }
 
 table {
   width: 100%;
@@ -709,9 +710,9 @@ table .tab a {
 table .tab a:first-child { margin-left: 0}
 
 table .tab a.active {
-  background-color: #f6f6f6;
+  background-color: var(--surface-raised);
   box-shadow: 0 0px 5px rgba(150, 150, 150, 0.1);
-  color: #aaa;
+  color: var(--text);
   font-weight: bold;
   opacity: 0.9;
   cursor: default;
@@ -1537,19 +1538,19 @@ table .short-link-wrapper { display: flex; align-items: center; }
   align-items: center;
   margin: 0;
   font-size: 14px;
-  color: #888;
+  color: var(--text-muted);
 }
 #main-table-wrapper table td .description a {
-  color: #aaa;
-  border-bottom-color: #aaa;
+  color: var(--text-faint);
+  border-bottom-color: var(--text-faint);
 }
 #main-table-wrapper table td .description svg {
-  stroke: #aaa;
+  stroke: var(--text-faint);
   stroke-width: 2;
   width: 0.85em;
   margin-right: 0.25rem;
 }
-#main-table-wrapper table td .description span { color: #aaa; }
+#main-table-wrapper table td .description span { color: var(--text-faint); }
 #main-table-wrapper table td .description a:hover { border-bottom-color: transparent; }
 
 #main-table-wrapper table .status {
@@ -1637,7 +1638,7 @@ table .short-link-wrapper { display: flex; align-items: center; }
   height: 20px;
   width: 1px;
   opacity: 0.4;
-  background-color: #888;
+  background-color: var(--border);
   margin: 0 1.5rem;
 }
 
@@ -1652,7 +1653,7 @@ table .short-link-wrapper { display: flex; align-items: center; }
   top: 0;
   height: 100%;
   width: 16px;
-  background: linear-gradient(to left, white, rgba(255, 255, 255, 0.001));
+  background: linear-gradient(to left, var(--surface), rgba(255, 255, 255, 0.001));
 }
 
 #main-table-wrapper table tbody tr:hover td.right-fade:after {
@@ -1663,7 +1664,7 @@ table .short-link-wrapper { display: flex; align-items: center; }
 #main-table-wrapper table .clipboard svg.check { width: 24px; }
 
 #main-table-wrapper table tr.edit {
-  background-color: #fafafa;
+  background-color: var(--row-hover);
 }
 
 #main-table-wrapper table tr.edit td { 
