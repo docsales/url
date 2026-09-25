@@ -35,6 +35,14 @@ router.get(
 );
 
 router.get(
+  "/login/rumbee",
+  locals.viewTemplate("login"),
+  auth.featureAccess([env.RUMBEE_ENABLED]),
+  asyncHandler(auth.jwtLoosePage),
+  asyncHandler(auth.rumbeeLogin)
+);
+
+router.get(
   "/logout", 
   asyncHandler(renders.logout)
 );
