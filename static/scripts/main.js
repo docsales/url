@@ -1,6 +1,17 @@
 // log htmx on dev
 // htmx.logAll();
 
+// toggle dark/light theme (data-theme is set pre-paint by an inline script in layout.hbs)
+function toggleTheme() {
+  var current = document.documentElement.getAttribute("data-theme");
+  if (!current) {
+    current = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  var next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("rb-theme", next);
+}
+
 // add text/html accept header to receive html instead of json for the requests
 document.body.addEventListener("htmx:configRequest", function(evt) {
   evt.detail.headers["Accept"] = "text/html,*/*";

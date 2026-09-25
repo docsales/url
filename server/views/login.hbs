@@ -1,7 +1,14 @@
-{{> header}}
-{{#if login_disabled}}
-  {{> auth/login_disabled}}
-{{else}}
-  {{> auth/form}}
-{{/if}}
+<div class="auth-shell">
+  {{> theme_toggle}}
+  <img src="/images/rumbee-icon-transparent.png" alt="RumBee" class="auth-shell-icon" />
+  <h1>Entrar no RumBee URL</h1>
+  <p class="auth-shell-subtitle">Use seu e-mail e senha para continuar.</p>
+  <div class="auth-shell-card">
+    {{#if login_disabled}}
+      {{> auth/login_disabled}}
+    {{else}}
+      {{> auth/form}}
+    {{/if}}
+  </div>
+</div>
 {{> footer}}

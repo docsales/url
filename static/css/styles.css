@@ -975,6 +975,112 @@ table .tab a:not(.active):hover {
 .htmx-spinner.htmx-request button svg { display: none; }
 .htmx-spinner.htmx-request .spinner { display: block; }
 
+/* BRAND / HEADER LOGO */
+
+header .logo img.brand-logo {
+  height: 20px;
+  width: auto;
+  margin: 0;
+}
+
+/* THEME TOGGLE */
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 9999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.theme-toggle:focus,
+.theme-toggle:hover {
+  transform: none;
+  box-shadow: none;
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  stroke: currentColor;
+}
+
+.theme-toggle-moon { display: none; }
+
+[data-theme="light"] .theme-toggle-sun { display: none; }
+[data-theme="light"] .theme-toggle-moon { display: flex; }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .theme-toggle-sun { display: none; }
+  :root:not([data-theme]) .theme-toggle-moon { display: flex; }
+}
+
+/* AUTH SHELL (login and, later, other bare pre-auth pages) */
+
+.auth-shell {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 16px 40px;
+  position: relative;
+}
+
+.auth-shell .theme-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.auth-shell-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.auth-shell h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+
+.auth-shell-subtitle {
+  margin: 0 0 32px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.auth-shell-card {
+  width: 420px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+}
+
+.auth-shell-card form#login-signup {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* LOGIN & SIGNUP */
 
 form#login-signup {
