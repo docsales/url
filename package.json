@@ -8,7 +8,8 @@
     "start": "node server/server.js --production",
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
-    "docs:build": "cd docs/api && node generate && cd ../.."
+    "docs:build": "cd docs/api && node generate && cd ../..",
+    "test": "node --test server/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "helmet": "7.1.0",
     "ioredis": "5.4.2",
     "isbot": "5.1.19",
+    "jose": "^6.2.12",
     "jsonwebtoken": "9.0.2",
     "knex": "3.1.0",
     "ms": "2.1.3",
