@@ -16,6 +16,7 @@ const { createClerkClient } = require("@clerk/backend");
 const asyncHandler = require("../utils/asyncHandler");
 const accessCache = require("../rumbee/access-cache");
 const rumbeeClient = require("../rumbee/client");
+const { forwardHandshake } = require("../rumbee/handshake");
 
 const clerkClient = createClerkClient({
   secretKey: env.CLERK_SECRET_KEY,
@@ -105,13 +106,15 @@ async function authenticateClerkRequest(req) {
     method: "GET",
     headers: new Headers(req.headers),
   });
-  const requestState = await clerkClient.authenticateRequest(request);
-  if (requestState.status !== "signed-in") return null;
-  return requestState.toAuth();
+  return clerkClient.authenticateRequest(request);
 }
 
 async function rumbeeLogin(req, res) {
-  const clerkAuth = await authenticateClerkRequest(req);
+  const requestState = await authenticateClerkRequest(req);
+
+  if (forwardHandshake(requestState, res)) return;
+
+  const clerkAuth = requestState.status === "signed-in" ? requestState.toAuth() : null;
 
   if (!clerkAuth?.userId) {
     res.redirect(env.RUMBEE_LOGIN_BASE_URL);
