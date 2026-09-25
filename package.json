@@ -9,7 +9,7 @@
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
     "docs:build": "cd docs/api && node generate && cd ../..",
-    "test": "node --test server/**/*.test.js"
+    "test": "NODE_ENV=test node --test"
   },
   "repository": {
     "type": "git",
