@@ -9,7 +9,8 @@
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
     "docs:build": "cd docs/api && node generate && cd ../..",
-    "test": "NODE_ENV=test node --test"
+    "test": "NODE_ENV=test node --test",
+    "verify:rumbee": "node server/vendor/rumbee-sdk/verify.js"
   },
   "repository": {
     "type": "git",
