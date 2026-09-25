@@ -11,6 +11,17 @@ const redis = require("../redis");
 const mail = require("../mail");
 const env = require("../env");
 
+const { createClerkClient } = require("@clerk/backend");
+
+const asyncHandler = require("../utils/asyncHandler");
+const accessCache = require("../rumbee/access-cache");
+const rumbeeClient = require("../rumbee/client");
+
+const clerkClient = createClerkClient({
+  secretKey: env.CLERK_SECRET_KEY,
+  publishableKey: env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+});
+
 const CustomError = utils.CustomError;
 
 function authenticate(type, error, isStrict, redirect) {
@@ -88,6 +99,70 @@ const jwtLoose = authenticate("jwt", "Unauthorized.", false, "header");
 const jwtLoosePage = authenticate("jwt", "Unauthorized.", false, "page");
 const apikey = authenticate("localapikey", "API key is not correct.", false, null);
 const oidc = authenticate("oidc", "Unauthorized", true, "page");
+
+async function authenticateClerkRequest(req) {
+  const request = new Request(utils.getSiteURL() + req.originalUrl, {
+    method: "GET",
+    headers: new Headers(req.headers),
+  });
+  const requestState = await clerkClient.authenticateRequest(request);
+  if (requestState.status !== "signed-in") return null;
+  return requestState.toAuth();
+}
+
+async function rumbeeLogin(req, res) {
+  const clerkAuth = await authenticateClerkRequest(req);
+
+  if (!clerkAuth?.userId) {
+    res.redirect(env.RUMBEE_LOGIN_BASE_URL);
+    return;
+  }
+
+  const clerkUser = await clerkClient.users.getUser(clerkAuth.userId);
+  const email = clerkUser.primaryEmailAddress?.emailAddress;
+  if (!email) {
+    throw new CustomError("Your RumBee ID account has no verified e-mail address.", 400);
+  }
+
+  let user = await query.user.find({ email });
+
+  if (!user) {
+    user = await query.user.create({
+      email,
+      password: utils.generateRandomPassword(),
+      verified: true,
+    });
+  }
+
+  if (user.clerk_user_id !== clerkAuth.userId) {
+    user = await query.user.update({ id: user.id }, { clerk_user_id: clerkAuth.userId });
+  }
+
+  if (!user.rumbee_id) {
+    const rumbeeId = await rumbeeClient.createAccount({ email: user.email });
+    user = await query.user.update({ id: user.id }, { rumbee_id: rumbeeId });
+  }
+
+  const token = utils.signToken(user);
+  utils.setToken(res, token);
+  res.redirect("/");
+}
+
+async function rumbeeAccessGate(req, res, next) {
+  if (!req.user?.rumbee_id || !req.user?.clerk_user_id) return next();
+
+  const result = await accessCache.getAccess(req.user.rumbee_id, req.user.clerk_user_id);
+  if (result.allowed) return next();
+
+  if (!req.isHTML) {
+    res.status(403).json({ error: "You don't have access to this app." });
+    return;
+  }
+  res.status(403).render("no_access", { title: "No access" });
+}
+
+const jwtWithAccess = [asyncHandler(jwt), asyncHandler(rumbeeAccessGate)];
+const jwtPageWithAccess = [asyncHandler(jwtPage), asyncHandler(rumbeeAccessGate)];
 
 function admin(req, res, next) {
   if (req.user.admin) return next();
@@ -393,11 +468,15 @@ module.exports = {
   jwtLoose,
   jwtLoosePage,
   jwtPage,
+  jwtPageWithAccess,
+  jwtWithAccess,
   local,
   login,
   newPassword,
   oidc,
   resetPassword,
+  rumbeeAccessGate,
+  rumbeeLogin,
   signup,
   verify,
 }
