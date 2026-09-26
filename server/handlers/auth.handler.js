@@ -18,6 +18,7 @@ const accessCache = require("../rumbee/access-cache");
 const rumbeeClient = require("../rumbee/client");
 const { createProvisioner } = require("../rumbee/provision");
 const { createSessionSync } = require("../rumbee/session");
+const { createRoleSync } = require("../rumbee/roles");
 
 const clerkClient = createClerkClient({
   secretKey: env.CLERK_SECRET_KEY,
@@ -146,11 +147,22 @@ const jwtLoosePage = authenticate("jwt", "Unauthorized.", false, "page");
 const apikey = authenticate("localapikey", "API key is not correct.", false, null);
 const oidc = authenticate("oidc", "Unauthorized", true, "page");
 
+const syncRole = createRoleSync({ updateUser: query.user.update });
+
 async function rumbeeAccessGate(req, res, next) {
   if (!req.user?.rumbee_id || !req.user?.clerk_user_id) return next();
 
   const result = await accessCache.getAccess(req.user.rumbee_id, req.user.clerk_user_id);
-  if (result.allowed) return next();
+  if (result.allowed) {
+    // the role is managed on id.; its access token carries the current one
+    // (a role_changed callback evicts the cached token, see webhook.routes.js)
+    const user = await syncRole(req.user, result.claims?.role);
+    if (user !== req.user) {
+      req.user = { ...user, admin: utils.isAdmin(user) };
+      res.locals.isAdmin = req.user.admin;
+    }
+    return next();
+  }
 
   if (!req.isHTML) {
     res.status(403).json({ error: "You don't have access to this app." });
