@@ -1,14 +1,26 @@
 <div class="auth-shell">
-  {{> theme_toggle}}
-  <img src="/images/rumbee-icon-transparent.png" alt="RumBee" class="auth-shell-icon" />
-  <h1>Entrar no RumBee URL</h1>
-  <p class="auth-shell-subtitle">Use seu e-mail e senha para continuar.</p>
-  <div class="auth-shell-card">
-    {{#if login_disabled}}
-      {{> auth/login_disabled}}
-    {{else}}
-      {{> auth/form}}
-    {{/if}}
+  <div class="auth-shell-panel">
+    <img src="/images/rumbee-icon-transparent.png" alt="RumBee" class="auth-shell-panel-icon" />
+    <div class="auth-shell-panel-copy">
+      <h1>Entrar no RumBee URL</h1>
+      <p class="auth-shell-subtitle">
+        {{#if disallow_login_form}}
+          Use sua conta RumBee ID para continuar.
+        {{else}}
+          Use seu e-mail e senha para continuar.
+        {{/if}}
+      </p>
+    </div>
+  </div>
+  <div class="auth-shell-content">
+    {{> theme_toggle}}
+    <div class="auth-shell-card">
+      {{#if login_disabled}}
+        {{> auth/login_disabled}}
+      {{else}}
+        {{> auth/form}}
+      {{/if}}
+    </div>
   </div>
 </div>
 {{> footer}}
