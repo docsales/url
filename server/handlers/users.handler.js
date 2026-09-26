@@ -4,6 +4,13 @@ const query = require("../queries");
 const utils = require("../utils");
 const mail = require("../mail");
 const env = require("../env");
+const rumbeeClient = require("../rumbee/client");
+const { createPreProvisioner } = require("../rumbee/pre-provision");
+
+const preProvisionOnRumbee = createPreProvisioner({
+  preProvisionUser: rumbeeClient.preProvisionUser,
+  accountId: rumbeeClient.ACCOUNT_ID,
+});
 
 async function get(req, res) {
   const domains = await query.domain.get({ user_id: req.user.id });
@@ -155,6 +162,12 @@ async function ban(req, res) {
 }
 
 async function create(req, res) {
+  // id. first: if it refuses, no local-only user (who could never sign in) is
+  // left behind. It is idempotent, so retrying after a local failure is safe.
+  if (env.RUMBEE_ENABLED) {
+    await preProvisionOnRumbee({ email: req.body.email, role: req.body.role });
+  }
+
   const salt = await bcrypt.genSalt(12);
   req.body.password = await bcrypt.hash(req.body.password, salt);
 
