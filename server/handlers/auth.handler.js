@@ -114,6 +114,14 @@ async function rumbeeLogin(req, res) {
 
   if (forwardHandshake(requestState, res)) return;
 
+  // authenticateRequest() can carry housekeeping Set-Cookie directives
+  // (client-uat sync, refreshed session cookie) on signed-in and signed-out
+  // results too, not only on handshake — Clerk's own contract is to always
+  // apply requestState.headers, regardless of status.
+  for (const [key, value] of requestState.headers) {
+    res.append(key, value);
+  }
+
   const clerkAuth = requestState.status === "signed-in" ? requestState.toAuth() : null;
 
   if (!clerkAuth?.userId) {
