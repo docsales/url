@@ -1,9 +1,22 @@
+const crypto = require("node:crypto");
+const path = require("node:path");
+const fs = require("node:fs");
+
 const query = require("../queries");
 const utils = require("../utils");
 const env = require("../env");
 const { frontendApiFromPublishableKey } = require("../rumbee/frontend-api");
 
 const clerkFrontendApi = frontendApiFromPublishableKey(env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
+// Cloudflare tells browsers to keep static files for 4h; a content hash in
+// the query string makes every deploy that changes them fetch fresh copies.
+const assetVersion = (() => {
+  const hash = crypto.createHash("sha1");
+  ["css/rumbee-tokens.css", "css/styles.css", "scripts/main.js", "scripts/rumbee-session.js"]
+    .forEach(file => hash.update(fs.readFileSync(path.join(__dirname, "../../static", file))));
+  return hash.digest("hex").slice(0, 10);
+})();
 
 function isHTML(req, res, next) {
   const accepts = req.accepts(["json", "html"]);
@@ -34,6 +47,7 @@ function config(req, res, next) {
   res.locals.rumbee_enabled = env.RUMBEE_ENABLED;
   res.locals.clerk_publishable_key = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   res.locals.clerk_frontend_api = clerkFrontendApi;
+  res.locals.asset_version = assetVersion;
   res.locals.login_disabled = env.DISALLOW_LOGIN_FORM && !env.OIDC_ENABLED && !env.RUMBEE_ENABLED;
   res.locals.oidc_enabled = env.OIDC_ENABLED;
   res.locals.oidc_button_text = env.OIDC_BUTTON_TEXT;
