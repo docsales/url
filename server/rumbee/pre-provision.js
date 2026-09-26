@@ -4,10 +4,7 @@
 // local row is linked to the Clerk user on their first sign-in (provision.js).
 
 const { CustomError } = require("../utils");
-
-// id.'s role_key vocabulary for the "url" product (GET /api/v1/roles):
-// lowercase — "Admin" is the display label and id. rejects it with a 422.
-const ROLE_KEYS = { ADMIN: "admin", USER: "user" };
+const { toRumbeeRole } = require("./roles");
 
 function createPreProvisioner({ preProvisionUser, accountId }) {
   return async function preProvision({ email, role }) {
@@ -15,7 +12,7 @@ function createPreProvisioner({ preProvisionUser, accountId }) {
       return await preProvisionUser({
         email,
         rumbeeId: accountId,
-        role: ROLE_KEYS[role] ?? ROLE_KEYS.USER,
+        role: toRumbeeRole(role),
       });
     } catch (error) {
       console.error(error);
