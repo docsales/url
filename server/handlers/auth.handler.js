@@ -16,6 +16,7 @@ const { createClerkClient } = require("@clerk/backend");
 const asyncHandler = require("../utils/asyncHandler");
 const accessCache = require("../rumbee/access-cache");
 const rumbeeClient = require("../rumbee/client");
+const { forwardHandshake } = require("../rumbee/handshake");
 
 const clerkClient = createClerkClient({
   secretKey: env.CLERK_SECRET_KEY,
@@ -105,13 +106,23 @@ async function authenticateClerkRequest(req) {
     method: "GET",
     headers: new Headers(req.headers),
   });
-  const requestState = await clerkClient.authenticateRequest(request);
-  if (requestState.status !== "signed-in") return null;
-  return requestState.toAuth();
+  return clerkClient.authenticateRequest(request);
 }
 
 async function rumbeeLogin(req, res) {
-  const clerkAuth = await authenticateClerkRequest(req);
+  const requestState = await authenticateClerkRequest(req);
+
+  if (forwardHandshake(requestState, res)) return;
+
+  // authenticateRequest() can carry housekeeping Set-Cookie directives
+  // (client-uat sync, refreshed session cookie) on signed-in and signed-out
+  // results too, not only on handshake — Clerk's own contract is to always
+  // apply requestState.headers, regardless of status.
+  for (const [key, value] of requestState.headers) {
+    res.append(key, value);
+  }
+
+  const clerkAuth = requestState.status === "signed-in" ? requestState.toAuth() : null;
 
   if (!clerkAuth?.userId) {
     res.redirect(env.RUMBEE_LOGIN_BASE_URL);
@@ -139,7 +150,7 @@ async function rumbeeLogin(req, res) {
     updates.clerk_user_id = clerkAuth.userId;
   }
   if (!user.rumbee_id) {
-    updates.rumbee_id = await rumbeeClient.createAccount({ email: user.email });
+    updates.rumbee_id = rumbeeClient.ACCOUNT_ID;
   }
   if (Object.keys(updates).length > 0) {
     user = await query.user.update({ id: user.id }, updates);
