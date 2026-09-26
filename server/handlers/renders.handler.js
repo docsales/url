@@ -25,14 +25,30 @@ async function login(req, res) {
   }
   
   res.render("login", {
-    title: "Log in or sign up"
+    title: env.RUMBEE_ENABLED ? "Entrar" : "Log in or sign up",
+    rumbee_page: "login",
   });
+}
+
+// pt-BR strings for Clerk's <SignIn/> on /login — clerk-js loaded from a
+// <script> tag has no bundler to import @clerk/localizations with
+let clerkLocalizationScript;
+function clerkLocalization(req, res) {
+  if (!clerkLocalizationScript) {
+    const { ptBR } = require("@clerk/localizations/pt-BR");
+    clerkLocalizationScript = `window.__rumbeeClerkLocalization = ${JSON.stringify(ptBR)};\n`;
+  }
+  res.type("application/javascript");
+  res.set("Cache-Control", "public, max-age=86400");
+  res.send(clerkLocalizationScript);
 }
 
 function logout(req, res) {
   utils.deleteCurrentToken(res);
   res.render("logout", {
-    title: "Logging out.."
+    title: "Logging out..",
+    // with RumBee ID, logging out here signs out of every RumBee app
+    rumbee_page: "logout",
   });
 }
 
@@ -305,6 +321,7 @@ async function linkEditAdmin(req, res) {
 }
 
 module.exports = {
+  clerkLocalization,
   addDomainAdmin,
   addDomainForm,
   admin,

@@ -154,3 +154,36 @@ como script `npm run verify:rumbee`.
 - Suporte a login local coexistindo com SSO (decisão explícita: substituição total).
 - UI de app-launcher customizada (o script pronto resolve).
 - Mudar tema claro/escuro do launcher dinamicamente.
+
+## Revisão 2026-09-26 — sessão do RumBee ID como fonte de verdade
+
+Problemas encontrados em produção com o desenho acima (seção 2): o JWT do Kutt
+virava uma sessão independente depois do `/login/rumbee`, então (1) quem já estava
+logado no `id.` (ou em outro satélite) caía na tela de login do `url.` até clicar no
+botão, (2) logout no `id.` não derrubava o `url.` (o cookie do Kutt vivia 7 dias sem
+consultar o Clerk de novo) e (3) a tela de login era o formulário do Kutt com um
+botão, fora do padrão do `id.`/`fin.`.
+
+Modelo atual:
+
+- **Servidor** (`server/rumbee/session.js`, chamado dentro de `authenticate()` para
+  toda rota autenticada por `jwt`): a cada request consulta o Clerk
+  (`authenticateRequest`, verificação local do `__session`).
+  - Logado no Clerk → garante que o cookie do Kutt é do mesmo usuário (provisiona/
+    vincula por `clerk_user_id` → e-mail via `server/rumbee/provision.js`). É o
+    login automático.
+  - Deslogado (`__client_uat` ausente ou zerado por um logout em qualquer app
+    RumBee) → apaga o cookie do Kutt.
+  - Handshake (GET de página sem `__session` ainda) → repassa o redirect do Clerk.
+  - Indeterminado (XHR do htmx com `__session` vencido — o Clerk só faz handshake em
+    navegação de página) → mantém o cookie do Kutt.
+  - Tokens emitidos pelo SSO levam `via: "rumbee"`; com `DISALLOW_LOGIN_FORM=false`
+    só eles são derrubados no logout do RumBee (sessão de senha local não é nossa).
+- **Browser** (`static/scripts/rumbee-session.js`, clerk-js v6 + `@clerk/ui` v1 do
+  Frontend API `clerk.rumbee.ai`): mantém o `__session` renovado, recarrega a página
+  quando o usuário sai (ou troca de conta) em outro app RumBee, renderiza o
+  `<SignIn/>` no `/login` com o mesmo `appearance` do `id.` e faz `signOut()` global
+  no `/logout`.
+- `/login/rumbee` virou redirect pra `/login`. A home e a criação de link passaram a
+  passar pelo `rumbeeAccessGate`. Usuário banido com sessão RumBee vê "sem acesso"
+  em vez de ir pro `/logout` (que o relogaria na hora — loop).

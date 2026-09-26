@@ -13,6 +13,7 @@ const router = Router();
 router.get(
   "/",
   asyncHandler(auth.jwtLoosePage),
+  asyncHandler(auth.rumbeeAccessGate),
   asyncHandler(helpers.adminSetup),
   asyncHandler(locals.user), 
   asyncHandler(renders.homepage)
@@ -34,12 +35,17 @@ router.get(
   asyncHandler(auth.login)
 );
 
+// kept for old bookmarks — /login itself signs RumBee ID users in now
 router.get(
   "/login/rumbee",
-  locals.viewTemplate("login"),
   auth.featureAccess([env.RUMBEE_ENABLED]),
-  asyncHandler(auth.jwtLoosePage),
-  asyncHandler(auth.rumbeeLogin)
+  (req, res) => res.redirect("/login")
+);
+
+router.get(
+  "/rumbee/clerk-localization.js",
+  auth.featureAccess([env.RUMBEE_ENABLED]),
+  renders.clerkLocalization
 );
 
 router.get(

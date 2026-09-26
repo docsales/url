@@ -37,6 +37,7 @@ router.post(
   locals.viewTemplate("partials/shortener"),
   asyncHandler(auth.apikey),
   asyncHandler(env.DISALLOW_ANONYMOUS_LINKS ? auth.jwt : auth.jwtLoose),
+  asyncHandler(auth.rumbeeAccessGate),
   locals.createLink,
   validators.createLink,
   asyncHandler(helpers.verify),
