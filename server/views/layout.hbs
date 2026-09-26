@@ -37,7 +37,7 @@
   {{/each}}
   {{{block "stylesheets"}}}
 </head>
-<body>
+<body{{#if rumbee_page}} data-rumbee-page="{{rumbee_page}}"{{/if}}{{#if rumbee_signed_in}} data-rumbee-signed-in="true"{{/if}}>
   <div class="main-wrapper">
     {{{body}}}
   </div>
@@ -47,6 +47,22 @@
   <script src="/libs/qrcode.min.js"></script>
   <script src="/scripts/main.js"></script>
   {{#if rumbee_enabled}}
+    {{#if clerk_frontend_api}}
+      {{!-- RumBee ID session: keeps Clerk's session cookie fresh, follows a
+           sign-out made on id. or any other RumBee app, renders <SignIn/> on
+           /login and signs out on /logout. Only where there's a session. --}}
+      {{#ifEquals rumbee_page "login"}}
+        <script src="/rumbee/clerk-localization.js"></script>
+        <script defer crossorigin="anonymous" src="https://{{clerk_frontend_api}}/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+      {{/ifEquals}}
+      {{#if rumbee_page}}
+        {{> rumbee/clerk_scripts}}
+      {{else}}
+        {{#if rumbee_signed_in}}
+          {{> rumbee/clerk_scripts}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
     <script src="https://id.rumbee.ai/launcher.js" data-lang="pt" data-theme="dark"></script>
   {{/if}}
 </body>

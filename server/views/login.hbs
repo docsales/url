@@ -1,26 +1,42 @@
+{{!-- Same layout as id.rumbee.ai's sign-in (app/[[...rest]]/page.tsx there):
+     brand panel, always dark, + the sign-in itself + legal footer. --}}
 <div class="auth-shell">
-  <div class="auth-shell-panel">
-    <img src="/images/rumbee-icon-transparent.png" alt="RumBee" class="auth-shell-panel-icon" />
+  <aside class="auth-shell-panel">
+    <img src="/images/rumbee-logo-horizontal-light-text.png" alt="RumBee" class="auth-shell-panel-logo" />
     <div class="auth-shell-panel-copy">
       <h1>Entrar no RumBee URL</h1>
       <p class="auth-shell-subtitle">
-        {{#if disallow_login_form}}
-          Use sua conta RumBee ID para continuar.
+        {{#if rumbee_enabled}}
+          Use sua conta RumBee para continuar.
         {{else}}
           Use seu e-mail e senha para continuar.
         {{/if}}
       </p>
     </div>
-  </div>
+    <img src="/images/rumbee-beeline-target.png" alt="" aria-hidden="true" class="auth-shell-panel-art" />
+  </aside>
   <div class="auth-shell-content">
     {{> theme_toggle}}
-    <div class="auth-shell-card">
-      {{#if login_disabled}}
-        {{> auth/login_disabled}}
-      {{else}}
-        {{> auth/form}}
-      {{/if}}
-    </div>
+    {{#if rumbee_enabled}}
+      <div class="auth-shell-signin" data-rumbee-sign-in>
+        <p class="auth-shell-status">Carregando…</p>
+      </div>
+      <noscript>
+        <p class="auth-shell-status">Ative o JavaScript para entrar com sua conta RumBee.</p>
+      </noscript>
+    {{else}}
+      <div class="auth-shell-card">
+        {{#if login_disabled}}
+          {{> auth/login_disabled}}
+        {{else}}
+          {{> auth/form}}
+        {{/if}}
+      </div>
+    {{/if}}
   </div>
 </div>
-{{> footer}}
+<footer class="auth-legal">
+  <a href="https://www.rumbee.ai/pt-br/termos-de-uso" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
+  <a href="https://www.rumbee.ai/pt-br/politica-de-privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>
+  <span>© 2026 RumBee, Inc.</span>
+</footer>

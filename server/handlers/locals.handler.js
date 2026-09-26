@@ -1,6 +1,9 @@
 const query = require("../queries");
 const utils = require("../utils");
 const env = require("../env");
+const { frontendApiFromPublishableKey } = require("../rumbee/frontend-api");
+
+const clerkFrontendApi = frontendApiFromPublishableKey(env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 function isHTML(req, res, next) {
   const accepts = req.accepts(["json", "html"]);
@@ -29,6 +32,8 @@ function config(req, res, next) {
   res.locals.disallow_registration = env.DISALLOW_REGISTRATION;
   res.locals.disallow_login_form = env.DISALLOW_LOGIN_FORM;
   res.locals.rumbee_enabled = env.RUMBEE_ENABLED;
+  res.locals.clerk_publishable_key = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  res.locals.clerk_frontend_api = clerkFrontendApi;
   res.locals.login_disabled = env.DISALLOW_LOGIN_FORM && !env.OIDC_ENABLED && !env.RUMBEE_ENABLED;
   res.locals.oidc_enabled = env.OIDC_ENABLED;
   res.locals.oidc_button_text = env.OIDC_BUTTON_TEXT;

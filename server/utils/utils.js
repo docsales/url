@@ -35,9 +35,10 @@ function isAdmin(user) {
   return user.role === ROLES.ADMIN;
 }
 
-function signToken(user) {
+function signToken(user, claims) {
   return JWT.sign(
       {
+        ...claims,
         iss: "ApiAuth",
         sub: user.id,
         iat: parseInt((new Date().getTime() / 1000).toFixed(0)),
@@ -45,6 +46,15 @@ function signToken(user) {
       },
       env.JWT_SECRET
     )
+}
+
+// payload of a valid, unexpired token signed by signToken — null otherwise
+function verifyToken(token) {
+  try {
+    return JWT.verify(token, env.JWT_SECRET);
+  } catch {
+    return null;
+  }
 }
 
 function setToken(res, token) {
@@ -472,6 +482,7 @@ module.exports = {
   sanitize,
   setToken,
   signToken,
+  verifyToken,
   sleep,
   statsObjectToArray,
   urlRegex,

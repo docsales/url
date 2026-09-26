@@ -16,7 +16,8 @@ const { createClerkClient } = require("@clerk/backend");
 const asyncHandler = require("../utils/asyncHandler");
 const accessCache = require("../rumbee/access-cache");
 const rumbeeClient = require("../rumbee/client");
-const { forwardHandshake } = require("../rumbee/handshake");
+const { createProvisioner } = require("../rumbee/provision");
+const { createSessionSync } = require("../rumbee/session");
 
 const clerkClient = createClerkClient({
   secretKey: env.CLERK_SECRET_KEY,
@@ -25,9 +26,40 @@ const clerkClient = createClerkClient({
 
 const CustomError = utils.CustomError;
 
+async function authenticateClerkRequest(req) {
+  const request = new Request(utils.getSiteURL() + req.originalUrl, {
+    method: req.method,
+    headers: new Headers(req.headers),
+  });
+  return clerkClient.authenticateRequest(request);
+}
+
+const findOrProvisionRumbeeUser = createProvisioner({
+  users: query.user,
+  getClerkUser: id => clerkClient.users.getUser(id),
+  accountId: rumbeeClient.ACCOUNT_ID,
+});
+
+const syncRumbeeSession = createSessionSync({
+  authenticateRequest: authenticateClerkRequest,
+  findOrProvisionUser: findOrProvisionRumbeeUser,
+  signToken: user => utils.signToken(user, { via: "rumbee" }),
+  setToken: utils.setToken,
+  deleteToken: utils.deleteCurrentToken,
+  verifyToken: utils.verifyToken,
+  ssoOnly: env.DISALLOW_LOGIN_FORM,
+});
+
 function authenticate(type, error, isStrict, redirect) {
-  return function auth(req, res, next) {
+  return async function auth(req, res, next) {
     if (req.user) return next();
+
+    // RumBee ID is the source of truth for the browser session: sign in
+    // whoever is signed in on *.rumbee.ai, sign out whoever isn't anymore.
+    if (type === "jwt" && env.RUMBEE_ENABLED) {
+      const handled = await syncRumbeeSession(req, res);
+      if (handled) return;
+    }
 
     passport.authenticate(type, (err, user, info) => {
       if (
@@ -38,6 +70,19 @@ function authenticate(type, error, isStrict, redirect) {
       };
 
       if (err) return next(err);
+
+      // With RumBee ID, /logout would sign a banned user straight back in
+      // from their still-valid RumBee session — a redirect loop. Show the
+      // no-access state instead.
+      if (env.RUMBEE_ENABLED && req.isHTML && redirect && user && user.banned) {
+        if (redirect === "page") {
+          res.status(403).render("no_access", { title: "No access" });
+          return;
+        }
+        res.setHeader("HX-Redirect", "/");
+        res.send("NO_ACCESS");
+        return;
+      }
 
       if (
         req.isHTML &&
@@ -82,7 +127,7 @@ function authenticate(type, error, isStrict, redirect) {
         if (info?.exp && req.isHTML && redirect === "page") {
           const diff = Math.abs(differenceInDays(new Date(info.exp * 1000), new Date()));
           if (diff < 6) {
-            const token = utils.signToken(user);
+            const token = utils.signToken(user, info.via ? { via: info.via } : undefined);
             utils.deleteCurrentToken(res);
             utils.setToken(res, token);
           }
@@ -101,66 +146,6 @@ const jwtLoosePage = authenticate("jwt", "Unauthorized.", false, "page");
 const apikey = authenticate("localapikey", "API key is not correct.", false, null);
 const oidc = authenticate("oidc", "Unauthorized", true, "page");
 
-async function authenticateClerkRequest(req) {
-  const request = new Request(utils.getSiteURL() + req.originalUrl, {
-    method: "GET",
-    headers: new Headers(req.headers),
-  });
-  return clerkClient.authenticateRequest(request);
-}
-
-async function rumbeeLogin(req, res) {
-  const requestState = await authenticateClerkRequest(req);
-
-  if (forwardHandshake(requestState, res)) return;
-
-  // authenticateRequest() can carry housekeeping Set-Cookie directives
-  // (client-uat sync, refreshed session cookie) on signed-in and signed-out
-  // results too, not only on handshake — Clerk's own contract is to always
-  // apply requestState.headers, regardless of status.
-  for (const [key, value] of requestState.headers) {
-    res.append(key, value);
-  }
-
-  const clerkAuth = requestState.status === "signed-in" ? requestState.toAuth() : null;
-
-  if (!clerkAuth?.userId) {
-    res.redirect(env.RUMBEE_LOGIN_BASE_URL);
-    return;
-  }
-
-  const clerkUser = await clerkClient.users.getUser(clerkAuth.userId);
-  const email = clerkUser.primaryEmailAddress?.emailAddress;
-  if (!email) {
-    throw new CustomError("Your RumBee ID account has no verified e-mail address.", 400);
-  }
-
-  let user = await query.user.find({ email });
-
-  if (!user) {
-    user = await query.user.create({
-      email,
-      password: utils.generateRandomPassword(),
-      verified: true,
-    });
-  }
-
-  const updates = {};
-  if (user.clerk_user_id !== clerkAuth.userId) {
-    updates.clerk_user_id = clerkAuth.userId;
-  }
-  if (!user.rumbee_id) {
-    updates.rumbee_id = rumbeeClient.ACCOUNT_ID;
-  }
-  if (Object.keys(updates).length > 0) {
-    user = await query.user.update({ id: user.id }, updates);
-  }
-
-  const token = utils.signToken(user);
-  utils.setToken(res, token);
-  res.redirect("/");
-}
-
 async function rumbeeAccessGate(req, res, next) {
   if (!req.user?.rumbee_id || !req.user?.clerk_user_id) return next();
 
@@ -171,6 +156,8 @@ async function rumbeeAccessGate(req, res, next) {
     res.status(403).json({ error: "You don't have access to this app." });
     return;
   }
+  // signed in, just not entitled: the header offers "Log out", not "Log in"
+  res.locals.user = req.user;
   res.status(403).render("no_access", { title: "No access" });
 }
 
@@ -489,7 +476,6 @@ module.exports = {
   oidc,
   resetPassword,
   rumbeeAccessGate,
-  rumbeeLogin,
   signup,
   verify,
 }
