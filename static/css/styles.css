@@ -104,7 +104,10 @@ span.underline { border-bottom: 2px dotted #999; }
   align-items: center;
 }
 
-a,
+/* :not(:where([data-rumbee-sign-in] *)) keeps Kutt's element-level rules
+   (a, button, input, label) out of Clerk's <SignIn/> DOM on /login without
+   changing their specificity */
+a:not(:where([data-rumbee-sign-in] *)),
 button.link {
   color: var(--color-primary);
   border-bottom: 1px dotted transparent;
@@ -113,7 +116,7 @@ button.link {
   cursor: pointer;
 }
 
-a:hover,
+a:not(:where([data-rumbee-sign-in] *)):hover,
 button.link:hover {
   border-bottom-color: var(--color-primary);
 }
@@ -132,7 +135,7 @@ a.nav:hover {
 }
 
 a.button,
-button {
+button:not(:where([data-rumbee-sign-in] *)) {
   position: relative;
   width: auto;
   height: 40px;
@@ -178,8 +181,8 @@ button.danger {
 
 a.button:focus,
 a.button:hover,
-button:focus,
-button:hover {
+button:not(:where([data-rumbee-sign-in] *)):focus,
+button:not(:where([data-rumbee-sign-in] *)):hover {
   box-shadow: 0 6px 15px var(--button-bg-box-shadow-color);
   transform: translateY(-2px) scale(1.02, 1.02);
 }
@@ -212,8 +215,8 @@ button:disabled:hover { transform: none; }
 
 a.button svg.with-text,
 a.button span svg,
-button svg.with-text,
-button span svg {
+button:not(:where([data-rumbee-sign-in] *)) svg.with-text,
+button:not(:where([data-rumbee-sign-in] *)) span svg {
   width: 1.1em;
   height: auto;
   margin-right: 0.5rem;
@@ -413,9 +416,9 @@ input {
   filter: none;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input[type="text"]:not(:where([data-rumbee-sign-in] *)),
+input[type="email"]:not(:where([data-rumbee-sign-in] *)),
+input[type="password"]:not(:where([data-rumbee-sign-in] *)) {
   box-sizing: border-box;
   width: 240px;
   height: 44px;
@@ -433,16 +436,16 @@ input[type="password"] {
 }
 
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="text"]:not(:where([data-rumbee-sign-in] *)):focus,
+input[type="email"]:not(:where([data-rumbee-sign-in] *)):focus,
+input[type="password"]:not(:where([data-rumbee-sign-in] *)):focus {
   outline: none;
   box-shadow: 0 20px 35px var(--input-hover-shadow-color);
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder {
+input[type="text"]:not(:where([data-rumbee-sign-in] *))::placeholder,
+input[type="email"]:not(:where([data-rumbee-sign-in] *))::placeholder,
+input[type="password"]:not(:where([data-rumbee-sign-in] *))::placeholder {
   font-size: 14px;
   letter-spacing: 0.05em;
   color: var(--text-muted);
@@ -553,7 +556,7 @@ select:has(option[value=""]:checked) {
   color: var(--text-muted);
 }
 
-label {
+label:not(:where([data-rumbee-sign-in] *)) {
   display: flex;
   color: var(--input-label-color);
   font-size: 1rem;
@@ -562,7 +565,7 @@ label {
   font-weight: bold;
 }
 
-label input {
+label:not(:where([data-rumbee-sign-in] *)) input {
   margin-top: 0.5rem;
 }
 
@@ -2292,9 +2295,9 @@ svg.map path.active { stroke: hsl(261, 46%, 50%); stroke-width: 1.5; }
 @media only screen and (max-width: 768px) {
   html, body { font-size: 14px; }
   
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
+  input[type="text"]:not(:where([data-rumbee-sign-in] *)),
+  input[type="email"]:not(:where([data-rumbee-sign-in] *)),
+  input[type="password"]:not(:where([data-rumbee-sign-in] *)),
   select  {
     font-size: 14px;
     padding: 0 16px;
@@ -2303,11 +2306,11 @@ svg.map path.active { stroke: hsl(261, 46%, 50%); stroke-width: 1.5; }
     border-bottom-width: 4px;
   }
 
-  label input { margin-top: 0.25rem; }
+  label:not(:where([data-rumbee-sign-in] *)) input { margin-top: 0.25rem; }
 
-  input[type="text"]::placeholder,
-  input[type="email"]::placeholder,
-  input[type="password"]::placeholder { font-size: 13px; letter-spacing: 0.04em; }
+  input[type="text"]:not(:where([data-rumbee-sign-in] *))::placeholder,
+  input[type="email"]:not(:where([data-rumbee-sign-in] *))::placeholder,
+  input[type="password"]:not(:where([data-rumbee-sign-in] *))::placeholder { font-size: 13px; letter-spacing: 0.04em; }
   
   table tr { padding: 0 0.25rem; } 
   table th,
@@ -2316,7 +2319,7 @@ svg.map path.active { stroke: hsl(261, 46%, 50%); stroke-width: 1.5; }
   table tr.loading-placeholder td { font-size: 16px; }
   
   a.button,
-  button { height: 32px; padding: 0 22px; font-size: 12px; }
+  button:not(:where([data-rumbee-sign-in] *)) { height: 32px; padding: 0 22px; font-size: 12px; }
   a.button.action,
   button.action { padding: 4px; width: 20px; height: 20px; }
   button.nav { height: 26px; padding: 0 7px; font-size: 11px; }
