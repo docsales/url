@@ -30,8 +30,8 @@
   <meta name="twitter:image" content="https://{{default_domain}}/images/og-image.png" />
   <meta name="description" content="{{site_name}} is a free and open source URL shortener with custom domains and stats." />
   <title>{{site_name}} | {{title}}</title>
-  <link rel="stylesheet" href="/css/rumbee-tokens.css">
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/rumbee-tokens.css?v={{asset_version}}">
+  <link rel="stylesheet" href="/css/styles.css?v={{asset_version}}">
   {{#each custom_styles}}
     <link rel="stylesheet" href="/css/{{this}}">
   {{/each}}
@@ -45,7 +45,7 @@
   {{{block "scripts"}}}
   <script src="/libs/htmx.min.js"></script>
   <script src="/libs/qrcode.min.js"></script>
-  <script src="/scripts/main.js"></script>
+  <script src="/scripts/main.js?v={{asset_version}}"></script>
   {{#if rumbee_enabled}}
     {{#if clerk_frontend_api}}
       {{!-- RumBee ID session: keeps Clerk's session cookie fresh, follows a
