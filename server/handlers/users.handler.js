@@ -6,9 +6,17 @@ const mail = require("../mail");
 const env = require("../env");
 const rumbeeClient = require("../rumbee/client");
 const { createPreProvisioner } = require("../rumbee/pre-provision");
+const { createAccessRevoker } = require("../rumbee/revoke");
+const accessCache = require("../rumbee/access-cache");
 
 const preProvisionOnRumbee = createPreProvisioner({
   preProvisionUser: rumbeeClient.preProvisionUser,
+  accountId: rumbeeClient.ACCOUNT_ID,
+});
+
+const revokeOnRumbee = createAccessRevoker({
+  revokeAccess: rumbeeClient.revokeAccess,
+  evict: accessCache.evict,
   accountId: rumbeeClient.ACCOUNT_ID,
 });
 
@@ -25,6 +33,12 @@ async function get(req, res) {
 };
 
 async function remove(req, res) {
+  // id. first: a local-only delete leaves the access on id. and the next
+  // sign-in re-provisions the user (see rumbee/revoke.js)
+  if (env.RUMBEE_ENABLED) {
+    await revokeOnRumbee(req.user);
+  }
+
   await query.user.remove(req.user);
 
   if (req.isHTML) {
@@ -53,7 +67,11 @@ async function removeByAdmin(req, res) {
       return res.status(400).send({ message });
     }
   }
-  
+
+  if (env.RUMBEE_ENABLED) {
+    await revokeOnRumbee(user);
+  }
+
   await query.user.remove(user);
 
   if (req.isHTML) {

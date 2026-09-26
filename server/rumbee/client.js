@@ -35,4 +35,20 @@ async function preProvisionUser(payload) {
   return body;
 }
 
-module.exports = { ACCOUNT_ID, checkAccess, preProvisionUser };
+async function revokeAccess(payload) {
+  const response = await fetch(new URL("/api/v1/access-revocations", env.RUMBEE_LOGIN_BASE_URL), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RUMBEE_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(`RumBee access revocation failed: ${response.status} ${JSON.stringify(body)}`);
+  }
+  return body;
+}
+
+module.exports = { ACCOUNT_ID, checkAccess, preProvisionUser, revokeAccess };
