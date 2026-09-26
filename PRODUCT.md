@@ -21,13 +21,13 @@ Exists instead of a third-party shortener (bit.ly and similar) specifically for 
 ## Operating Context
 
 - Deployed at `url.rumbee.ai`, self-hosted on Railway (Postgres backend), deploys triggered manually via `railway up` (no GitHub-integration auto-deploy configured).
-- Part of the broader RumBee product ecosystem alongside `id.rumbee.ai` (centralized identity/SSO — Apple/Google/Microsoft/passkey/email) and `fin.rumbee.ai`. RumBee URL already has generic OIDC config support (`server/env.js`) but it is currently unconfigured/disabled; today's login is email + password.
-- The login screen's visual shell (dark-anchored page, small RumBee icon, heading + Portuguese subtitle, theme-aware card, light/dark toggle) was deliberately built to match the id.rumbee.ai / fin.rumbee.ai pattern, without wiring live SSO yet — that integration is a known, explicit future step, not an oversight.
-- No automated test suite exists (`npm test` → missing script). Manual verification (live browser check, both themes) is the current QA practice for UI changes.
+- Part of the broader RumBee product ecosystem alongside `id.rumbee.ai` (centralized identity/SSO — Apple/Google/Microsoft/passkey/email) and `fin.rumbee.ai`. Login is exclusively through RumBee ID (Clerk, shared across `*.rumbee.ai`); the Kutt email/password form and OIDC are disabled. See `CLAUDE.md` → RumBee ID.
+- The login screen matches id.rumbee.ai: always-dark brand panel (wordmark, heading + Portuguese subtitle, beeline), Clerk's `<SignIn/>` with id.'s appearance, legal footer, light/dark toggle.
+- `npm test` (`node --test`) covers the RumBee ID pieces (session sync, provisioning, webhook, access cache). UI changes are verified live in the browser, both themes.
 
 ## Capabilities and Constraints
 
-- Core Kutt feature set: URL shortening, custom short URLs, custom domains, password/description/expiration per link, private per-link statistics, admin page for user/link management, REST API, OIDC login support (present, unconfigured).
+- Core Kutt feature set: URL shortening, custom short URLs, custom domains, password/description/expiration per link, private per-link statistics, admin page for user/link management, REST API.
 - Backend: Node/Express + Handlebars views, plain CSS (no build step, no CSS framework/Tailwind), HTMX for interactivity, Postgres via Knex migrations.
 - Self-hosted deploy target is Railway; database is Postgres in production (Kutt itself also supports SQLite/MySQL).
 - Design-system migration is in progress, done in verified phases (never one giant rewrite) — see `docs/superpowers/specs/2026-09-25-rumbee-design-system-migration-design.md` and the vendored RumBee Brand Book at `docs/design-system/rumbee-brand/`.
