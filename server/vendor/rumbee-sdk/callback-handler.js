@@ -11,7 +11,13 @@ async function handleCallback(request, callbackSecret, handlers) {
     return new Response(null, { status: 401 });
   }
 
-  const body = await request.json();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    // Authenticated but malformed body: a client error, not a handler crash.
+    return new Response(null, { status: 400 });
+  }
 
   switch (body.event) {
     case "ping":

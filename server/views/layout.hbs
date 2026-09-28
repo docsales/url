@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {{!-- RumBee product analytics (PostHog), loaded centrally by id.: page views,
+       clicks and masked session replay, only on url.rumbee.ai. Before the app's
+       own scripts; business events go through static/scripts/rumbee-analytics.js. --}}
+  <script src="https://id.rumbee.ai/analytics.js"></script>
   <script>
     (function () {
       var stored = localStorage.getItem('rb-theme');
@@ -45,6 +49,7 @@
   {{{block "scripts"}}}
   <script src="/libs/htmx.min.js"></script>
   <script src="/libs/qrcode.min.js"></script>
+  <script src="/scripts/rumbee-analytics.js?v={{asset_version}}"></script>
   <script src="/scripts/main.js?v={{asset_version}}"></script>
   {{#if rumbee_enabled}}
     {{#if clerk_frontend_api}}

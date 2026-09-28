@@ -81,6 +81,25 @@ apps `*.rumbee.ai` (Frontend API `clerk.rumbee.ai`). Spec com a revisão de 2026
   4. usuário sem acesso → tela "sem acesso", sem loop;
   5. `/login` = `<SignIn/>` com o tema do `id.`, dark e light.
 
+## Analytics (PostHog via `id.`)
+
+`<script src="https://id.rumbee.ai/analytics.js">` no `<head>` do `layout.hbs` captura
+page views, cliques e replay (tudo mascarado centralmente) só em `url.rumbee.ai`. Seção
+"Analytics (optional)" de `server/vendor/rumbee-sdk/AI-AGENT.md`. Não instalar
+`posthog-js`, não configurar key nem mascaramento.
+
+- Eventos de negócio: `rumbeeAnalytics.track()` (`static/scripts/rumbee-analytics.js`,
+  port do `lib/analytics.ts`). Nome `objeto_verbo`, snake_case, passado, sem o produto;
+  **nunca** dado pessoal nas propriedades (e-mail, nome, URL do link).
+- Resultado de request htmx (criou, editou, excluiu) é emitido **pelo servidor**:
+  `track(res, ...)` de `server/rumbee/analytics.js` põe o evento no `HX-Trigger` e o
+  `main.js` repassa. O browser não sabe se deu certo — erro de validação do Kutt volta
+  200 com HTML.
+- Ação só de browser (copiar, abrir QR code): `rumbeeAnalytics.track()` direto no JS.
+- Conferir em produção: DevTools → Network, `id.rumbee.ai/rbx/...` com 200; PostHog →
+  Activity com `product = url`. Em `localhost` o `analytics.js` não faz nada
+  (`window.posthog` nem existe).
+
 ## Design system
 
 Este app está migrando pro RumBee Brand Book como design system único — cor, tipografia,

@@ -42,3 +42,13 @@ test("an event with no matching handler still returns 200", async () => {
   const res = await handleCallback(request(body, "right"), "right", {});
   assert.equal(res.status, 200);
 });
+
+test("an authenticated but malformed body is a 400, not a crash", async () => {
+  const req = new Request("http://internal/api/webhooks/rumbee-login", {
+    method: "POST",
+    headers: { "X-Rumbee-Callback-Secret": "right" },
+    body: "{not json",
+  });
+  const res = await handleCallback(req, "right", {});
+  assert.equal(res.status, 400);
+});

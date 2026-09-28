@@ -13,7 +13,8 @@ const clerkFrontendApi = frontendApiFromPublishableKey(env.NEXT_PUBLIC_CLERK_PUB
 // the query string makes every deploy that changes them fetch fresh copies.
 const assetVersion = (() => {
   const hash = crypto.createHash("sha1");
-  ["css/rumbee-tokens.css", "css/styles.css", "scripts/main.js", "scripts/rumbee-session.js"]
+  ["css/rumbee-tokens.css", "css/styles.css", "scripts/main.js", "scripts/rumbee-session.js",
+    "scripts/rumbee-analytics.js"]
     .forEach(file => hash.update(fs.readFileSync(path.join(__dirname, "../../static", file))));
   return hash.digest("hex").slice(0, 10);
 })();

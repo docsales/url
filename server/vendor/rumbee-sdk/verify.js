@@ -63,6 +63,11 @@ async function main() {
     if (!passed) allPassed = false;
   }
 
+  console.log(
+    "\nThese checks don't cover SSO (sign-in, sign-out, login screen). The integration is " +
+      'done only after the manual acceptance checklist in AI-AGENT.md ("Verify your ' +
+      'integration") passes too.',
+  );
   process.exit(allPassed ? 0 : 1);
 }
 

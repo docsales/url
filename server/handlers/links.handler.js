@@ -6,6 +6,7 @@ const URL = require("node:url");
 const dns = require("node:dns");
 
 const validators = require("./validators.handler");
+const analytics = require("../rumbee/analytics");
 const map = require("../utils/map.json");
 const transporter = require("../mail");
 const query = require("../queries");
@@ -148,6 +149,12 @@ async function create(req, res) {
   
   if (req.isHTML) {
     res.setHeader("HX-Trigger", "reloadMainTable");
+    analytics.track(res, "link_created", {
+      custom_address: !!customurl,
+      custom_domain: !!domain_id,
+      password_protected: !!password,
+      expires: !!expire_in,
+    });
     const shortURL = utils.getShortURL(link.address, link.domain);
     return res.render("partials/shortener", {
       link: shortURL.link, 
@@ -242,6 +249,9 @@ async function edit(req, res) {
   );
 
   if (req.isHTML) {
+    analytics.track(res, "link_updated", {
+      fields: ["address", "target", "description", "expire_in", "password"].filter(name => name in req.body),
+    });
     res.render("partials/links/edit", {
       swap_oob: true,
       success: "Link has been updated.",
@@ -360,6 +370,7 @@ async function remove(req, res) {
   if (req.isHTML) {
     res.setHeader("HX-Reswap", "outerHTML");
     res.setHeader("HX-Trigger", "reloadMainTable");
+    analytics.track(res, "link_deleted");
     res.render("partials/links/dialog/delete_success", {
       link: utils.getShortURL(link.address, link.domain).link,
     });

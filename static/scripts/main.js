@@ -24,6 +24,11 @@ document.body.addEventListener("redirectToHomepage", function() {
   }, 1500);
 });
 
+// RumBee analytics: business events named by the server (server/rumbee/analytics.js)
+document.body.addEventListener("rumbee-track", function(evt) {
+  rumbeeAnalytics.track(evt.detail.event, evt.detail.properties);
+});
+
 // reset form if event is sent from the backend
 function resetForm(id) {
   return function() {
@@ -101,6 +106,7 @@ function handleQRCode(element, id) {
   const dialogContent = dialog.querySelector(".content-wrapper");
   if (!dialogContent) return;
   openDialog(id, "qrcode");
+  rumbeeAnalytics.track("qr_code_viewed");
   dialogContent.textContent = "";
   const qrcode = new QRCode(dialogContent, {
     text: element.dataset.url,
@@ -126,6 +132,12 @@ function handleShortURLCopyLink(element) {
   setTimeout(function() {
     clipboard.classList.remove("copied");
   }, 1000);
+}
+
+// copy a short link (the API key shares the copy button, not this event)
+function handleLinkCopy(element, source) {
+  handleShortURLCopyLink(element);
+  rumbeeAnalytics.track("link_copied", { source: source });
 }
 
 // open and close dialog
