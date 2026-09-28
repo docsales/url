@@ -65,7 +65,7 @@
       <div class="clipboard small">
         <button 
           aria-label="Copy" 
-          hx-on:click="handleShortURLCopyLink(this);"
+          hx-on:click="handleLinkCopy(this, 'admin_table');"
           data-url="{{link.url}}"
         >
           {{> icons/copy}}

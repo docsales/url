@@ -67,6 +67,9 @@ Fases do spec (`docs/superpowers/specs/2026-09-25-rumbee-design-system-migration
   produção (o FAPI recusa `localhost`).
 - 🌱 **Launcher do `id.` com tema fixo** (`data-theme="dark"` no `layout.hbs`) — seguir o
   tema da página e remontar no toggle.
+- 🌱 **Links criados pela API (chave de API) não viram evento de analytics** — o
+  PostHog roda só no browser (`id.rumbee.ai/analytics.js`); capturar no servidor
+  dependeria de uma rota de ingestão do `id.` que não existe.
 - 🌱 **Scripts one-off** `server/rumbee/find-provisioning-candidates.js` e
   `provision-operators.js` — já rodados; apagar quando não forem mais úteis como
   referência.
@@ -113,3 +116,12 @@ Fases do spec (`docs/superpowers/specs/2026-09-25-rumbee-design-system-migration
   graça" só pra app com Clerk no frontend, ausência de regra sobre sessão/logout e sobre
   a tela de login, prompt de ativação assumindo multi-tenant, `verify.ts` sem checagem
   de SSO).
+
+### Analytics (2026-09-28)
+
+- SDK atualizado pro upstream `396e3ed` (`server/vendor/rumbee-sdk/README.md`): 400 pra
+  JSON malformado no webhook, aviso do checklist de SSO no `verify`, `AI-AGENT.md`
+  vendorizado e `lib/analytics.ts` portado pro browser.
+- `id.rumbee.ai/analytics.js` no `<head>` de todas as páginas. Eventos: `link_created`,
+  `link_updated`, `link_deleted` (servidor, via `HX-Trigger`), `link_copied`,
+  `qr_code_viewed` (browser).
